@@ -1,11 +1,239 @@
 ---
-import Welcome from '../components/Welcome.astro';
+// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navbar from '../components/Navbar.astro';
+import StepProgress from '../components/StepProgress.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ColumnMappingModal from '../components/ColumnMappingModal.astro';
+import StepBobot from '../components/StepBobot.astro';
+import StepMatriks from '../components/StepMatriks.astro';
+import StepHasil from '../components/StepHasil.astro';
 ---
 
 <Layout>
-	<Welcome />
+  <!-- SheetJS CDN (must load before components use XLSX) -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" is:inline></script>
+
+  <!-- Fixed Navbar -->
+  <Navbar />
+
+  <!-- Step Progress (hidden until Step 1 begins) -->
+  <StepProgress />
+
+  <!-- Hero / Upload Section -->
+  <HeroSection />
+
+  <!-- Column Mapping Modal (hidden, shown after upload) -->
+  <ColumnMappingModal />
+
+  <!-- Step Sections (no wrapper so no extra bg/min-height showing) -->
+  <StepBobot />
+  <StepMatriks />
+  <StepHasil />
+
+  <!-- Main App Controller -->
+  <script>
+    // =============================================
+    // SPK App Controller — Main Orchestration
+    // =============================================
+
+    let currentStep = 0; // 0 = hero, 1 = bobot, 2 = matriks, 3 = hasil
+    let excelData = null; // { headers, rows }
+
+    const STEP_SECTIONS = {
+      0: 'hero-section',
+      1: 'step-bobot',
+      2: 'step-matriks',
+      3: 'step-hasil',
+    };
+
+    // Display mode per step: hero uses flex, steps use block
+    const STEP_DISPLAY = { 0: 'flex', 1: 'block', 2: 'block', 3: 'block' };
+
+    function showStep(step) {
+      // Hide all sections
+      Object.values(STEP_SECTIONS).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+
+      // Show target with correct display type
+      const target = STEP_SECTIONS[step];
+      const targetEl = document.getElementById(target);
+      if (targetEl) {
+        targetEl.style.display = STEP_DISPLAY[step] || 'block';
+        setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+      }
+
+      currentStep = step;
+
+      // Progress UI
+      if (step >= 1) {
+        window.updateStepProgress?.(step);
+      } else {
+        const prog = document.getElementById('step-progress-container');
+        if (prog) prog.style.display = 'none';
+      }
+
+      // Step-specific init
+      if (step === 1) window.initBobotStep?.();
+      if (step === 2) window.initMatriksStep?.();
+      if (step === 3) window.initHasilStep?.();
+    }
+
+    // === LOAD SAMPLE DATA ===
+    window.addEventListener('spk:use-sample', () => {
+      // Inline sample data (same as sampleData.js)
+      const SAMPLE = [
+        { name: "Madhouse",         c1: 8.12, c2: 2850000, c3: 112, c4: 8.5,  c5: 520000, c6: 28 },
+        { name: "Mappa",            c1: 7.98, c2: 3120000, c3: 48,  c4: 12.1, c5: 680000, c6: 14 },
+        { name: "Wit Studio",       c1: 8.05, c2: 2240000, c3: 32,  c4: 9.8,  c5: 430000, c6: 11 },
+        { name: "Ufotable",         c1: 8.52, c2: 3450000, c3: 38,  c4: 5.2,  c5: 920000, c6: 18 },
+        { name: "Kyoto Animation",  c1: 8.48, c2: 2980000, c3: 62,  c4: 4.8,  c5: 870000, c6: 22 },
+        { name: "Bones",            c1: 7.85, c2: 1980000, c3: 88,  c4: 11.2, c5: 350000, c6: 16 },
+        { name: "Production I.G",   c1: 7.72, c2: 1650000, c3: 156, c4: 14.3, c5: 280000, c6: 20 },
+        { name: "J.C.Staff",        c1: 7.21, c2: 1420000, c3: 198, c4: 22.5, c5: 180000, c6: 8  },
+        { name: "Shaft",            c1: 7.68, c2: 1320000, c3: 74,  c4: 18.4, c5: 210000, c6: 9  },
+        { name: "A-1 Pictures",     c1: 7.45, c2: 1880000, c3: 145, c4: 19.8, c5: 310000, c6: 12 },
+        { name: "Trigger",          c1: 7.92, c2: 1540000, c3: 28,  c4: 10.5, c5: 295000, c6: 7  },
+        { name: "CloverWorks",      c1: 7.78, c2: 1720000, c3: 42,  c4: 13.2, c5: 265000, c6: 10 },
+        { name: "David Production", c1: 7.95, c2: 1460000, c3: 56,  c4: 9.1,  c5: 385000, c6: 13 },
+        { name: "Doga Kobo",        c1: 7.34, c2: 820000,  c3: 48,  c4: 16.7, c5: 145000, c6: 5  },
+        { name: "OLM",              c1: 6.85, c2: 1120000, c3: 142, c4: 28.4, c5: 95000,  c6: 3  },
+        { name: "Toei Animation",   c1: 7.05, c2: 2450000, c3: 312, c4: 25.8, c5: 420000, c6: 15 },
+        { name: "Sunrise",          c1: 7.38, c2: 1750000, c3: 188, c4: 21.3, c5: 265000, c6: 11 },
+        { name: "Studio Deen",      c1: 6.92, c2: 980000,  c3: 168, c4: 29.5, c5: 88000,  c6: 4  },
+        { name: "Brains Base",      c1: 7.15, c2: 720000,  c3: 68,  c4: 20.1, c5: 112000, c6: 5  },
+        { name: "White Fox",        c1: 7.82, c2: 1280000, c3: 22,  c4: 7.8,  c5: 320000, c6: 8  },
+        { name: "P.A. Works",       c1: 7.56, c2: 1050000, c3: 44,  c4: 15.6, c5: 185000, c6: 7  },
+        { name: "Kinema Citrus",    c1: 7.65, c2: 920000,  c3: 28,  c4: 12.8, c5: 195000, c6: 6  },
+        { name: "8-Bit",            c1: 7.18, c2: 680000,  c3: 32,  c4: 17.4, c5: 98000,  c6: 4  },
+        { name: "feel.",            c1: 7.02, c2: 580000,  c3: 54,  c4: 24.3, c5: 72000,  c6: 3  },
+        { name: "TMS Entertainment",c1: 7.35, c2: 1150000, c3: 98,  c4: 20.8, c5: 168000, c6: 7  },
+        { name: "Satelight",        c1: 7.08, c2: 680000,  c3: 72,  c4: 22.1, c5: 82000,  c6: 3  },
+        { name: "Manglobe",         c1: 7.88, c2: 850000,  c3: 18,  c4: 8.2,  c5: 245000, c6: 7  },
+        { name: "Gainax",           c1: 8.02, c2: 1480000, c3: 42,  c4: 11.5, c5: 480000, c6: 12 },
+        { name: "Gonzo",            c1: 6.78, c2: 720000,  c3: 88,  c4: 32.5, c5: 65000,  c6: 2  },
+        { name: "Lerche",           c1: 7.55, c2: 960000,  c3: 38,  c4: 14.2, c5: 175000, c6: 6  },
+      ];
+
+      const studios = SAMPLE.map(s => s.name);
+      const matrixX = SAMPLE.map(s => [s.c1, s.c2, s.c3, s.c4, s.c5, s.c6]);
+
+      sessionStorage.setItem('spk_studioNames', JSON.stringify(studios));
+      sessionStorage.setItem('spk_matrixX', JSON.stringify(matrixX));
+
+      // Default weights
+      const defaultWeights = { c1: 0.20, c2: 0.15, c3: 0.15, c4: 0.20, c5: 0.15, c6: 0.15 };
+      sessionStorage.setItem('spk_weights', JSON.stringify(defaultWeights));
+
+      showStep(1);
+    });
+
+    // === FILE UPLOAD HANDLER ===
+    window.addEventListener('spk:file-selected', async (e) => {
+      const file = e.detail?.file;
+      if (!file) return;
+
+      // Wait for XLSX to be available
+      let attempts = 0;
+      while (typeof XLSX === 'undefined' && attempts < 20) {
+        await new Promise(r => setTimeout(r, 100));
+        attempts++;
+      }
+
+      if (typeof XLSX === 'undefined') {
+        window.showDropzoneState?.('idle');
+        alert('Library Excel belum dimuat. Refresh halaman dan coba lagi.');
+        return;
+      }
+
+      try {
+        // Parse Excel
+        const buffer = await file.arrayBuffer();
+        const data = new Uint8Array(buffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+        if (!jsonData || jsonData.length < 2) {
+          window.showDropzoneState?.('idle');
+          alert('File Excel kosong atau tidak valid.');
+          return;
+        }
+
+        const headers = jsonData[0].map(h => String(h).trim()).filter(h => h !== '');
+        const rawRows = jsonData.slice(1).filter(row =>
+          row.some(cell => cell !== '' && cell !== null)
+        );
+        const rows = rawRows.map(row => {
+          const obj = {};
+          headers.forEach((h, i) => obj[h] = row[i] !== undefined ? row[i] : '');
+          return obj;
+        });
+
+        excelData = { headers, rows, filename: file.name };
+
+        window.showDropzoneState?.('success', file.name, `${rows.length} baris data ditemukan`);
+        window.openMappingModal?.(headers, rows, file.name);
+
+      } catch (err) {
+        window.showDropzoneState?.('idle');
+        alert('Error membaca file: ' + err.message);
+      }
+    });
+
+    // === MAPPING CONFIRMED ===
+    window.addEventListener('spk:mapping-confirmed', (e) => {
+      const mapping = e.detail;
+      if (!excelData) return;
+
+      const { headers, rows } = excelData;
+      const studios = [];
+      const matrixX = [];
+
+      rows.forEach(row => {
+        const studioName = String(row[mapping.studioCol] || '').trim();
+        if (!studioName) return;
+        studios.push(studioName);
+
+        const criteriaKeys = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'];
+        const vals = criteriaKeys.map(key => {
+          const colName = mapping[key];
+          const raw = row[colName];
+          const parsed = parseFloat(String(raw).replace(/,/g, '.'));
+          return isNaN(parsed) ? 0 : parsed;
+        });
+        matrixX.push(vals);
+      });
+
+      if (studios.length === 0) {
+        alert('Tidak ada data studio yang bisa diambil. Periksa mapping kolom.');
+        return;
+      }
+
+      sessionStorage.setItem('spk_studioNames', JSON.stringify(studios));
+      sessionStorage.setItem('spk_matrixX', JSON.stringify(matrixX));
+      sessionStorage.setItem('spk_colMapping', JSON.stringify(mapping));
+
+      showStep(1);
+    });
+
+    // === STEP NAVIGATION ===
+    window.addEventListener('spk:goto-step', (e) => {
+      const step = e.detail?.step;
+      if (step !== undefined) showStep(step);
+    });
+
+    // === INIT ===
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hide all first
+      Object.values(STEP_SECTIONS).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      showStep(0);
+    });
+  </script>
 </Layout>

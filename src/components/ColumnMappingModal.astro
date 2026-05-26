@@ -1,0 +1,273 @@
+---
+// src/components/ColumnMappingModal.astro
+---
+
+<div id="mapping-modal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-content w-full" style="max-width:720px;">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6 border-b-[3px] border-slate-900 pb-4">
+      <div>
+        <h2 id="modal-title" class="text-2xl font-black text-slate-900 uppercase tracking-wide" style="font-family:'Rajdhani',sans-serif;">
+          🗂️ Mapping Kolom Excel
+        </h2>
+        <p class="text-slate-600 font-bold mt-1">Cocokkan kolom Excel ke 6 kriteria sistem</p>
+      </div>
+      <button id="modal-close" class="w-10 h-10 bg-white border-[3px] border-slate-900 shadow-[4px_4px_0px_rgba(15,23,42,1)] hover:bg-red-500 hover:text-white flex items-center justify-center transition-all active:translate-x-1 active:translate-y-1 active:shadow-none" aria-label="Tutup modal">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 font-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- File info -->
+    <div id="modal-file-info" class="mb-5 p-4 bg-blue-100 border-[3px] border-slate-900 shadow-[4px_4px_0px_rgba(15,23,42,1)] flex items-center gap-4">
+      <div class="w-12 h-12 bg-blue-600 border-2 border-slate-900 flex items-center justify-center flex-shrink-0 transform -rotate-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+      <div class="min-w-0">
+        <p class="font-black text-slate-900 text-base uppercase tracking-wider truncate" id="modal-filename">-</p>
+        <p class="text-slate-700 font-bold text-sm bg-white border border-slate-900 inline-block px-2 mt-1 shadow-[2px_2px_0px_rgba(15,23,42,1)]" id="modal-rowcount">- baris</p>
+      </div>
+    </div>
+
+    <!-- Studio name column selector -->
+    <div class="mb-6">
+      <label class="block text-base font-black text-slate-900 mb-2 uppercase tracking-wide">
+        Kolom Nama Studio <span class="text-red-600 text-xl">*</span>
+      </label>
+      <select id="map-studio-col" class="w-full border-[3px] border-slate-900 px-4 py-3 text-base font-bold text-slate-900 focus:outline-none focus:ring-0 focus:shadow-[4px_4px_0px_#2563eb] bg-white transition-shadow">
+        <option value="">-- PILIH KOLOM NAMA STUDIO --</option>
+      </select>
+    </div>
+
+    <!-- Criteria mapping grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      <div id="map-c1" class="mapping-row p-4 border-[3px] border-slate-900 bg-white shadow-[4px_4px_0px_rgba(15,23,42,1)]">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <span class="text-base font-black text-slate-900 uppercase">C1 — Skor MAL</span>
+          </div>
+          <span class="text-[0.65rem] px-2 py-0.5 bg-blue-200 border border-slate-900 text-blue-900 font-bold uppercase">Benefit</span>
+        </div>
+        <select id="map-col-c1" class="w-full border-2 border-slate-900 px-3 py-2 text-sm font-bold bg-white focus:outline-none focus:shadow-[3px_3px_0px_#2563eb]">
+          <option value="">-- Pilih kolom --</option>
+        </select>
+      </div>
+
+      <div id="map-c2" class="mapping-row p-4 border-[3px] border-slate-900 bg-white shadow-[4px_4px_0px_rgba(15,23,42,1)]">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-base font-black text-slate-900 uppercase">C2 — Members</span>
+          <span class="text-[0.65rem] px-2 py-0.5 bg-blue-200 border border-slate-900 text-blue-900 font-bold uppercase">Benefit</span>
+        </div>
+        <select id="map-col-c2" class="w-full border-2 border-slate-900 px-3 py-2 text-sm font-bold bg-white focus:outline-none focus:shadow-[3px_3px_0px_#2563eb]">
+          <option value="">-- Pilih kolom --</option>
+        </select>
+      </div>
+
+      <div id="map-c3" class="mapping-row p-4 border-[3px] border-slate-900 bg-white shadow-[4px_4px_0px_rgba(15,23,42,1)]">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-base font-black text-slate-900 uppercase">C3 — Produktivitas</span>
+          <span class="text-[0.65rem] px-2 py-0.5 bg-blue-200 border border-slate-900 text-blue-900 font-bold uppercase">Benefit</span>
+        </div>
+        <select id="map-col-c3" class="w-full border-2 border-slate-900 px-3 py-2 text-sm font-bold bg-white focus:outline-none focus:shadow-[3px_3px_0px_#2563eb]">
+          <option value="">-- Pilih kolom --</option>
+        </select>
+      </div>
+
+      <div id="map-c4" class="mapping-row p-4 border-[3px] border-slate-900 bg-red-50 shadow-[4px_4px_0px_rgba(15,23,42,1)]">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-base font-black text-red-700 uppercase">C4 — Rasio Flop</span>
+          <span class="text-[0.65rem] px-2 py-0.5 bg-red-200 border border-slate-900 text-red-900 font-bold uppercase">Cost</span>
+        </div>
+        <select id="map-col-c4" class="w-full border-2 border-slate-900 px-3 py-2 text-sm font-bold bg-white focus:outline-none focus:shadow-[3px_3px_0px_#ef4444]">
+          <option value="">-- Pilih kolom --</option>
+        </select>
+      </div>
+
+      <div id="map-c5" class="mapping-row p-4 border-[3px] border-slate-900 bg-white shadow-[4px_4px_0px_rgba(15,23,42,1)]">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-base font-black text-slate-900 uppercase">C5 — Favorites</span>
+          <span class="text-[0.65rem] px-2 py-0.5 bg-blue-200 border border-slate-900 text-blue-900 font-bold uppercase">Benefit</span>
+        </div>
+        <select id="map-col-c5" class="w-full border-2 border-slate-900 px-3 py-2 text-sm font-bold bg-white focus:outline-none focus:shadow-[3px_3px_0px_#2563eb]">
+          <option value="">-- Pilih kolom --</option>
+        </select>
+      </div>
+
+      <div id="map-c6" class="mapping-row p-4 border-[3px] border-slate-900 bg-white shadow-[4px_4px_0px_rgba(15,23,42,1)]">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-base font-black text-slate-900 uppercase">C6 — Masterpiece</span>
+          <span class="text-[0.65rem] px-2 py-0.5 bg-blue-200 border border-slate-900 text-blue-900 font-bold uppercase">Benefit</span>
+        </div>
+        <select id="map-col-c6" class="w-full border-2 border-slate-900 px-3 py-2 text-sm font-bold bg-white focus:outline-none focus:shadow-[3px_3px_0px_#2563eb]">
+          <option value="">-- Pilih kolom --</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Data preview -->
+    <div class="mb-8">
+      <p class="text-sm font-black text-slate-900 mb-2 uppercase tracking-wide bg-yellow-300 inline-block px-2 border-2 border-slate-900">PREVIEW DATA (3 BARIS):</p>
+      <div class="overflow-x-auto border-[3px] border-slate-900 shadow-[4px_4px_0px_rgba(15,23,42,1)] bg-white">
+        <table class="w-full text-xs font-bold font-mono">
+          <thead>
+            <tr id="preview-header" class="bg-slate-900 text-white uppercase tracking-wider">
+              <!-- headers inserted by JS -->
+            </tr>
+          </thead>
+          <tbody id="preview-body" class="divide-y-[2px] divide-slate-300">
+            <!-- rows inserted by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Error display -->
+    <div id="mapping-error" class="mb-6 p-4 bg-red-100 border-[3px] border-slate-900 shadow-[4px_4px_0px_rgba(15,23,42,1)] flex items-center gap-3" style="display:none;">
+      <div class="w-8 h-8 bg-red-500 text-white flex items-center justify-center border-2 border-slate-900 font-black">!</div>
+      <span class="text-slate-900 font-black uppercase" id="mapping-error-text"></span>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="flex gap-4 justify-end pt-4 border-t-[3px] border-slate-900">
+      <button id="modal-cancel" class="btn-secondary px-6 py-3 text-base">
+        BATAL
+      </button>
+      <button id="modal-confirm" class="btn-primary flex items-center gap-2 px-8 py-3 text-base">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        KONFIRMASI MAPPING
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.openMappingModal = function(headers, rows, filename) {
+    const modal = document.getElementById('mapping-modal');
+    if (!modal) return;
+
+    // Update file info
+    const filenameEl = document.getElementById('modal-filename');
+    const rowCountEl = document.getElementById('modal-rowcount');
+    if (filenameEl) filenameEl.textContent = filename || 'file.xlsx';
+    if (rowCountEl) rowCountEl.textContent = `${rows.length} baris`;
+
+    // Populate all selects
+    const selects = [
+      'map-studio-col', 'map-col-c1', 'map-col-c2', 'map-col-c3',
+      'map-col-c4', 'map-col-c5', 'map-col-c6'
+    ];
+    selects.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const current = el.value;
+      el.innerHTML = `<option value="">-- PILIH KOLOM --</option>`;
+      headers.forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h;
+        opt.textContent = h.toUpperCase();
+        if (h === current) opt.selected = true;
+        el.appendChild(opt);
+      });
+    });
+
+    // Auto-guess mappings (case-insensitive match)
+    const guessMap = {
+      'map-studio-col': ['studio', 'name', 'nama', 'studio name'],
+      'map-col-c1': ['skor', 'score', 'rating', 'c1', 'mal score'],
+      'map-col-c2': ['member', 'members', 'c2', 'jumlah member'],
+      'map-col-c3': ['produk', 'produktivitas', 'total anime', 'c3', 'jumlah anime'],
+      'map-col-c4': ['flop', 'rasio flop', 'c4', 'flop rate', 'rasio'],
+      'map-col-c5': ['favorit', 'favorites', 'favourite', 'c5', 'fav'],
+      'map-col-c6': ['masterpiece', 'master', 'c6', 'top score'],
+    };
+    Object.entries(guessMap).forEach(([selectId, keywords]) => {
+      const sel = document.getElementById(selectId);
+      if (!sel || sel.value) return;
+      for (const h of headers) {
+        if (keywords.some(kw => h.toLowerCase().includes(kw))) {
+          sel.value = h;
+          break;
+        }
+      }
+    });
+
+    // Preview table
+    renderPreview(headers, rows);
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  function renderPreview(headers, rows) {
+    const headerRow = document.getElementById('preview-header');
+    const body = document.getElementById('preview-body');
+    if (!headerRow || !body) return;
+
+    headerRow.innerHTML = headers.slice(0, 8).map(h =>
+      `<th class="px-3 py-2 text-left whitespace-nowrap border-r border-slate-700">${h}</th>`
+    ).join('') + (headers.length > 8 ? `<th class="px-3 py-2 text-left border-r border-slate-700">+${headers.length - 8}</th>` : '');
+
+    body.innerHTML = rows.slice(0, 3).map((row, i) =>
+      `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-slate-100'} hover:bg-blue-50">
+        ${headers.slice(0, 8).map(h =>
+          `<td class="px-3 py-2 text-slate-800 whitespace-nowrap max-w-xs truncate border-r border-slate-300" title="${String(row[h] ?? '')}">
+            ${String(row[h] ?? '-').substring(0, 30)}
+          </td>`
+        ).join('')}
+        ${headers.length > 8 ? '<td class="px-3 py-2 text-slate-400 italic">...</td>' : ''}
+      </tr>`
+    ).join('');
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('mapping-modal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+    window.showDropzoneState?.('idle');
+  }
+
+  document.getElementById('modal-close')?.addEventListener('click', closeModal);
+  document.getElementById('modal-cancel')?.addEventListener('click', closeModal);
+
+  document.getElementById('mapping-modal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('mapping-modal')) closeModal();
+  });
+
+  document.getElementById('modal-confirm')?.addEventListener('click', () => {
+    const studioCol = document.getElementById('map-studio-col')?.value;
+    const c1 = document.getElementById('map-col-c1')?.value;
+    const c2 = document.getElementById('map-col-c2')?.value;
+    const c3 = document.getElementById('map-col-c3')?.value;
+    const c4 = document.getElementById('map-col-c4')?.value;
+    const c5 = document.getElementById('map-col-c5')?.value;
+    const c6 = document.getElementById('map-col-c6')?.value;
+
+    const errors = [];
+    if (!studioCol) errors.push('Kolom NAMA STUDIO wajib dipilih.');
+    if (!c1) errors.push('Kolom C1 wajib dipilih.');
+    if (!c2) errors.push('Kolom C2 wajib dipilih.');
+    if (!c3) errors.push('Kolom C3 wajib dipilih.');
+    if (!c4) errors.push('Kolom C4 wajib dipilih.');
+    if (!c5) errors.push('Kolom C5 wajib dipilih.');
+    if (!c6) errors.push('Kolom C6 wajib dipilih.');
+
+    const errorEl = document.getElementById('mapping-error');
+    const errorText = document.getElementById('mapping-error-text');
+    if (errors.length > 0) {
+      if (errorEl) errorEl.style.display = 'flex';
+      if (errorText) errorText.textContent = errors.join(' ');
+      return;
+    }
+    if (errorEl) errorEl.style.display = 'none';
+
+    const mapping = { studioCol, c1, c2, c3, c4, c5, c6 };
+    window.dispatchEvent(new CustomEvent('spk:mapping-confirmed', { detail: mapping }));
+
+    closeModal();
+  });
+</script>

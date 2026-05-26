@@ -1,23 +1,326 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+// src/layouts/Layout.astro
+import '../styles/global.css';
+---
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>SPK Pemeringkatan Kualitas Studio Animasi</title>
+    <meta name="description" content="Sistem Pendukung Keputusan berbasis metode SAW untuk pemeringkatan kualitas studio animasi anime. Unggah data Excel, atur bobot kriteria, dan dapatkan ranking akurat." />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Background JP Matrix (Cyberpunk Anime Theme) -->
+    <div style="position: fixed; inset: 0; z-index: -10; pointer-events: none; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #05050a;">
+      <div class="jp-matrix" style="opacity: 0.2;">
+        <span>ア</span><span>イ</span><span>ウ</span><span>エ</span><span>オ</span
+        ><span>カ</span><span>キ</span><span>ク</span><span>ケ</span><span>コ</span
+        ><span>サ</span><span>シ</span><span>ス</span><span>セ</span><span>ソ</span
+        ><span>タ</span><span>チ</span><span>ツ</span><span>テ</span><span>ト</span
+        ><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span
+        ><span>ハ</span><span>ヒ</span><span>フ</span><span>ヘ</span><span>ホ</span
+        ><span>マ</span><span>ミ</span><span>ム</span><span>メ</span><span>モ</span
+        ><span>ヤ</span><span>ユ</span><span>ヨ</span><span>ラ</span><span>リ</span
+        ><span>ル</span><span>レ</span><span>ロ</span><span>ワ</span><span>ヲ</span
+        ><span>ン</span><span>ガ</span><span>ギ</span><span>グ</span><span>ゲ</span
+        ><span>ゴ</span><span>ザ</span><span>ジ</span><span>ズ</span><span>ゼ</span
+        ><span>ゾ</span><span>ダ</span><span>ヂ</span><span>ヅ</span><span>デ</span
+        ><span>ド</span><span>バ</span><span>ビ</span><span>ブ</span><span>ベ</span
+        ><span>ボ</span><span>パ</span><span>ピ</span><span>プ</span><span>ペ</span
+        ><span>ポ</span><span>ア</span><span>イ</span><span>ウ</span><span>エ</span
+        ><span>オ</span><span>カ</span><span>キ</span><span>ク</span><span>ケ</span
+        ><span>コ</span><span>サ</span><span>シ</span><span>ス</span><span>セ</span
+        ><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span><span>テ</span
+        ><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span
+        ><span>ノ</span><span>ハ</span><span>ヒ</span><span>フ</span><span>ヘ</span
+        ><span>ホ</span> <span>ア</span><span>イ</span><span>ウ</span><span>エ</span
+        ><span>オ</span><span>カ</span><span>キ</span><span>ク</span><span>ケ</span
+        ><span>コ</span><span>サ</span><span>シ</span><span>ス</span><span>セ</span
+        ><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span><span>テ</span
+        ><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span
+        ><span>ノ</span><span>ハ</span><span>ヒ</span><span>フ</span><span>ヘ</span
+        ><span>ホ</span><span>マ</span><span>ミ</span><span>ム</span><span>メ</span
+        ><span>モ</span><span>ヤ</span><span>ユ</span><span>ヨ</span><span>ラ</span
+        ><span>リ</span><span>ル</span><span>レ</span><span>ロ</span><span>ワ</span
+        ><span>ヲ</span><span>ン</span><span>ガ</span><span>ギ</span><span>グ</span
+        ><span>ゲ</span><span>ゴ</span><span>ザ</span><span>ジ</span><span>ズ</span
+        ><span>ゼ</span><span>ゾ</span><span>ダ</span><span>ヂ</span><span>ヅ</span
+        ><span>デ</span><span>ド</span><span>バ</span><span>ビ</span><span>ブ</span
+        ><span>ベ</span><span>ボ</span><span>パ</span><span>ピ</span><span>プ</span
+        ><span>ペ</span><span>ポ</span><span>ア</span><span>イ</span><span>ウ</span
+        ><span>エ</span><span>オ</span><span>カ</span><span>キ</span><span>ク</span
+        ><span>ケ</span><span>コ</span><span>サ</span><span>シ</span><span>ス</span
+        ><span>セ</span><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span
+        ><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span
+        ><span>ネ</span><span>ノ</span><span>ハ</span><span>ヒ</span><span>フ</span
+        ><span>ヘ</span><span>ホ</span> <span>ア</span><span>イ</span><span>ウ</span
+        ><span>エ</span><span>オ</span><span>カ</span><span>キ</span><span>ク</span
+        ><span>ケ</span><span>コ</span><span>サ</span><span>シ</span><span>ス</span
+        ><span>セ</span><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span
+        ><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span
+        ><span>ネ</span><span>ノ</span><span>ハ</span><span>ヒ</span><span>フ</span
+        ><span>ヘ</span><span>ホ</span><span>マ</span><span>ミ</span><span>ム</span
+        ><span>メ</span><span>モ</span><span>ヤ</span><span>ユ</span><span>ヨ</span
+        ><span>ラ</span><span>リ</span><span>ル</span><span>レ</span><span>ロ</span
+        ><span>ワ</span><span>ヲ</span><span>ン</span><span>ガ</span><span>ギ</span
+        ><span>グ</span><span>ゲ</span><span>ゴ</span><span>ザ</span><span>ジ</span
+        ><span>ズ</span><span>ゼ</span><span>ゾ</span><span>ダ</span><span>ヂ</span
+        ><span>ヅ</span><span>デ</span><span>ド</span><span>バ</span><span>ビ</span
+        ><span>ブ</span><span>ベ</span><span>ボ</span><span>パ</span><span>ピ</span
+        ><span>プ</span><span>ペ</span><span>ポ</span><span>ア</span><span>イ</span
+        ><span>ウ</span><span>エ</span><span>オ</span><span>カ</span><span>キ</span
+        ><span>ク</span><span>ケ</span><span>コ</span><span>サ</span><span>シ</span
+        ><span>ス</span><span>セ</span><span>ソ</span><span>タ</span><span>チ</span
+        ><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span
+        ><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span><span>ヒ</span
+        ><span>フ</span><span>ヘ</span><span>ホ</span> <span>ア</span><span>イ</span
+        ><span>ウ</span><span>エ</span><span>オ</span><span>カ</span><span>キ</span
+        ><span>ク</span><span>ケ</span><span>コ</span><span>サ</span><span>シ</span
+        ><span>ス</span><span>セ</span><span>ソ</span><span>タ</span><span>チ</span
+        ><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span
+        ><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span><span>ヒ</span
+        ><span>フ</span><span>ヘ</span><span>ホ</span><span>マ</span><span>ミ</span
+        ><span>ム</span><span>メ</span><span>モ</span><span>ヤ</span><span>ユ</span
+        ><span>ヨ</span><span>ラ</span><span>リ</span><span>ル</span><span>レ</span
+        ><span>ロ</span><span>ワ</span><span>ヲ</span><span>ン</span><span>ガ</span
+        ><span>gi</span><span>グ</span><span>ゲ</span><span>ゴ</span><span>ザ</span
+        ><span>ジ</span><span>ズ</span><span>ゼ</span><span>ゾ</span><span>ダ</span
+        ><span>ヂ</span><span>ヅ</span><span>デ</span><span>ド</span><span>バ</span
+        ><span>ビ</span><span>ブ</span><span>ベ</span><span>ボ</span><span>パ</span
+        ><span>ピ</span><span>プ</span><span>ペ</span><span>ポ</span><span>ア</span
+        ><span>イ</span><span>ウ</span><span>エ</span><span>オ</span><span>カ</span
+        ><span>キ</span><span>ク</span><span>ケ</span><span>コ</span><span>サ</span
+        ><span>シ</span><span>ス</span><span>セ</span><span>ソ</span><span>タ</span
+        ><span>チ</span><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span
+        ><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span
+        ><span>ヒ</span><span>フ</span><span>ヘ</span><span>ホ</span> <span>ア</span
+        ><span>イ</span><span>ウ</span><span>エ</span><span>オ</span><span>カ</span
+        ><span>キ</span><span>ク</span><span>ケ</span><span>コ</span><span>サ</span
+        ><span>シ</span><span>ス</span><span>セ</span><span>ソ</span><span>タ</span
+        ><span>チ</span><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span
+        ><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span
+        ><span>hi</span><span>フ</span><span>ヘ</span><span>ホ</span><span>マ</span
+        ><span>ミ</span><span>ム</span><span>メ</span><span>モ</span><span>ヤ</span
+        ><span>ユ</span><span>ヨ</span><span>ラ</span><span>リ</span><span>ル</span
+        ><span>レ</span><span>ロ</span><span>ワ</span><span>ヲ</span><span>ン</span
+        ><span>ガ</span><span>ギ</span><span>グ</span><span>ゲ</span><span>ゴ</span
+        ><span>ザ</span><span>ジ</span><span>ズ</span><span>ゼ</span><span>ゾ</span
+        ><span>ダ</span><span>ヂ</span><span>ヅ</span><span>デ</span><span>ド</span
+        ><span>バ</span><span>ビ</span><span>ブ</span><span>ベ</span><span>ボ</span
+        ><span>パ</span><span>ピ</span><span>プ</span><span>ペ</span><span>ポ</span
+        ><span>ア</span><span>イ</span><span>ウ</span><span>エ</span><span>オ</span
+        ><span>カ</span><span>キ</span><span>ク</span><span>ケ</span><span>コ</span
+        ><span>サ</span><span>シ</span><span>ス</span><span>セ</span><span>ソ</span
+        ><span>タ</span><span>チ</span><span>ツ</span><span>テ</span><span>ト</span
+        ><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span
+        ><span>ハ</span><span>hi</span><span>フ</span><span>ヘ</span><span>ホ</span>
+        <span>ア</span><span>イ</span><span>ウ</span><span>エ</span><span>オ</span
+        ><span>カ</span><span>キ</span><span>ク</span><span>ケ</span><span>コ</span
+        ><span>サ</span><span>シ</span><span>ス</span><span>セ</span><span>ソ</span
+        ><span>タ</span><span>チ</span><span>ツ</span><span>テ</span><span>ト</span
+        ><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span
+        ><span>ハ</span><span>ヒ</span><span>フ</span><span>ヘ</span><span>ホ</span
+        ><span>マ</span><span>ミ</span><span>ム</span><span>メ</span><span>モ</span
+        ><span>ヤ</span><span>ユ</span><span>ヨ</span><span>ラ</span><span>リ</span
+        ><span>ル</span><span>le</span><span>ロ</span><span>ワ</span><span>ヲ</span
+        ><span>ン</span><span>ガ</span><span>ギ</span><span>グ</span><span>ゲ</span
+        ><span>ゴ</span><span>ザ</span><span>ジ</span><span>ズ</span><span>ゼ</span
+        ><span>ゾ</span><span>ダ</span><span>ヂ</span><span>ヅ</span><span>デ</span
+        ><span>ド</span><span>バ</span><span>ビ</span><span>ブ</span><span>ベ</span
+        ><span>ボ</span><span>パ</span><span>ピ</span><span>プ</span><span>ペ</span
+        ><span>ポ</span><span>ア</span><span>イ</span><span>ウ</span><span>エ</span
+        ><span>オ</span><span>カ</span><span>キ</span><span>ク</span><span>ケ</span
+        ><span>ko</span><span>サ</span><span>シ</span><span>ス</span><span>セ</span
+        ><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span><span>テ</span
+        ><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span
+        ><span>ノ</span><span>ハ</span><span>hi</span><span>フ</span><span>ヘ</span
+        ><span>ホ</span> <span>ア</span><span>イ</span><span>ウ</span><span>エ</span
+        ><span>オ</span><span>カ</span><span>キ</span><span>ク</span><span>ケ</span
+        ><span>コ</span><span>sa</span><span>シ</span><span>ス</span><span>セ</span
+        ><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span><span>テ</span
+        ><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span
+        ><span>no</span><span>ハ</span><span>hi</span><span>フ</span><span>ヘ</span
+        ><span>ホ</span><span>マ</span><span>ミ</span><span>ム</span><span>メ</span
+        ><span>モ</span><span>ヤ</span><span>ユ</span><span>ヨ</span><span>ラ</span
+        ><span>リ</span><span>ル</span><span>レ</span><span>ロ</span><span>ワ</span
+        ><span>ヲ</span><span>ン</span><span>ガ</span><span>ギ</span><span>グ</span
+        ><span>ゲ</span><span>ゴ</span><span>ザ</span><span>ジ</span><span>ズ</span
+        ><span>ゼ</span><span>ゾ</span><span>ダ</span><span>ヂ</span><span>ヅ</span
+        ><span>デ</span><span>ド</span><span>バ</span><span>ビ</span><span>ブ</span
+        ><span>ベ</span><span>ボ</span><span>パ</span><span>ピ</span><span>プ</span
+        ><span>ペ</span><span>ポ</span><span>ア</span><span>イ</span><span>ウ</span
+        ><span>エ</span><span>オ</span><span>カ</span><span>キ</span><span>ク</span
+        ><span>ケ</span><span>コ</span><span>sa</span><span>シ</span><span>ス</span
+        ><span>セ</span><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span
+        ><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span
+        ><span>ネ</span><span>ノ</span><span>ハ</span><span>ヒ</span><span>フ</span
+        ><span>ヘ</span><span>ホ</span> <span>ア</span><span>イ</span><span>ウ</span
+        ><span>エ</span><span>オ</span><span>カ</span><span>キ</span><span>ク</span
+        ><span>ケ</span><span>コ</span><span>sa</span><span>シ</span><span>ス</span
+        ><span>セ</span><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span
+        ><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span
+        ><span>ネ</span><span>ノ</span><span>ハ</span><span>hi</span><span>フ</span
+        ><span>ヘ</span><span>ホ</span><span>マ</span><span>ミ</span><span>ム</span
+        ><span>メ</span><span>mo</span><span>ヤ</span><span>ユ</span><span>ヨ</span
+        ><span>ラ</span><span>ri</span><span>ル</span><span>レ</span><span>ロ</span
+        ><span>ワ</span><span>ヲ</span><span>ン</span><span>ガ</span><span>ギ</span
+        ><span>グ</span><span>ゲ</span><span>ゴ</span><span>ザ</span><span>ジ</span
+        ><span>ズ</span><span>ゼ</span><span>ゾ</span><span>ダ</span><span>ヂ</span
+        ><span>ヅ</span><span>デ</span><span>ド</span><span>バ</span><span>ビ</span
+        ><span>ブ</span><span>ベ</span><span>ボ</span><span>パ</span><span>ピ</span
+        ><span>プ</span><span>ペ</span><span>ポ</span><span>ア</span><span>イ</span
+        ><span>ウ</span><span>エ</span><span>オ</span><span>カ</span><span>キ</span
+        ><span>ク</span><span>ケ</span><span>コ</span><span>サ</span><span>シ</span
+        ><span>ス</span><span>セ</span><span>ソ</span><span>タ</span><span>チ</span
+        ><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span
+        ><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span><span>ヒ</span
+        ><span>フ</span><span>ヘ</span><span>ホ</span> <span>ア</span><span>イ</span
+        ><span>ウ</span><span>エ</span><span>オ</span><span>カ</span><span>キ</span
+        ><span>ク</span><span>ケ</span><span>コ</span><span>サ</span><span>シ</span
+        ><span>ス</span><span>セ</span><span>ソ</span><span>タ</span><span>チ</span
+        ><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span><span>ニ</span
+        ><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span><span>ヒ</span
+        ><span>フ</span><span>ヘ</span><span>ホ</span><span>マ</span><span>ミ</span
+        ><span>ム</span><span>メ</span><span>モ</span><span>ヤ</span><span>ユ</span
+        ><span>ヨ</span><span>ラ</span><span>リ</span><span>ル</span><span>レ</span
+        ><span>ロ</span><span>ワ</span><span>ヲ</span><span>ン</span><span>ガ</span
+        ><span>ギ</span><span>グ</span><span>ゲ</span><span>ゴ</span><span>ザ</span
+        ><span>ジ</span><span>ズ</span><span>ゼ</span><span>ゾ</span><span>ダ</span
+        ><span>ヂ</span><span>ヅ</span><span>デ</span><span>ド</span><span>バ</span
+        ><span>ビ</span><span>ブ</span><span>ベ</span><span>ボ</span><span>パ</span
+        ><span>ピ</span><span>プ</span><span>ペ</span><span>ポ</span><span>ア</span
+        ><span>イ</span><span>ウ</span><span>エ</span><span>オ</span><span>カ</span
+        ><span>キ</span><span>ク</span><span>ケ</span><span>コ</span><span>サ</span
+        ><span>シ</span><span>ス</span><span>セ</span><span>ソ</span><span>タ</span
+        ><span>チ</span><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span
+        ><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span
+        ><span>ヒ</span><span>フ</span><span>ヘ</span><span>ホ</span> <span>ア</span
+        ><span>イ</span><span>ウ</span><span>エ</span><span>オ</span><span>カ</span
+        ><span>キ</span><span>ク</span><span>ケ</span><span>コ</span><span>サ</span
+        ><span>シ</span><span>ス</span><span>セ</span><span>ソ</span><span>タ</span
+        ><span>チ</span><span>ツ</span><span>テ</span><span>ト</span><span>ナ</span
+        ><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span><span>ハ</span
+        ><span>hi</span><span>フ</span><span>ヘ</span><span>ホ</span><span>マ</span
+        ><span>ミ</span><span>ム</span><span>メ</span><span>モ</span><span>ヤ</span
+        ><span>ユ</span><span>ヨ</span><span>ラ</span><span>リ</span><span>ル</span
+        ><span>レ</span><span>ロ</span><span>ワ</span><span>ヲ</span><span>ン</span
+        ><span>ガ</span><span>ギ</span><span>グ</span><span>ゲ</span><span>ゴ</span
+        ><span>ザ</span><span>ジ</span><span>ズ</span><span>ゼ</span><span>ゾ</span
+        ><span>ダ</span><span>ヂ</span><span>ヅ</span><span>デ</span><span>ド</span
+        ><span>バ</span><span>ビ</span><span>ブ</span><span>ベ</span><span>ボ</span
+        ><span>パ</span><span>ピ</span><span>プ</span><span>ペ</span><span>ポ</span
+        ><span>ア</span><span>イ</span><span>ウ</span><span>エ</span><span>オ</span
+        ><span>カ</span><span>キ</span><span>ク</span><span>ケ</span><span>コ</span
+        ><span>サ</span><span>シ</span><span>ス</span><span>セ</span><span>ソ</span
+        ><span>タ</span><span>チ</span><span>ツ</span><span>テ</span><span>ト</span
+        ><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span
+        ><span>ハ</span><span>ヒ</span><span>フ</span><span>ヘ</span><span>ホ</span>
+        <span>ア</span><span>イ</span><span>ウ</span><span>エ</span><span>オ</span
+        ><span>カ</span><span>キ</span><span>ク</span><span>ケ</span><span>コ</span
+        ><span>サ</span><span>シ</span><span>ス</span><span>セ</span><span>ソ</span
+        ><span>タ</span><span>チ</span><span>ツ</span><span>テ</span><span>ト</span
+        ><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span><span>ノ</span
+        ><span>ハ</span><span>hi</span><span>フ</span><span>ヘ</span><span>ホ</span
+        ><span>マ</span><span>ミ</span><span>ム</span><span>メ</span><span>モ</span
+        ><span>ヤ</span><span>ユ</span><span>ヨ</span><span>ラ</span><span>リ</span
+        ><span>ル</span><span>レ</span><span>ロ</span><span>ワ</span><span>ヲ</span
+        ><span>ン</span><span>ガ</span><span>ギ</span><span>グ</span><span>ゲ</span
+        ><span>ゴ</span><span>ザ</span><span>ジ</span><span>ズ</span><span>ゼ</span
+        ><span>ゾ</span><span>ダ</span><span>ヂ</span><span>ヅ</span><span>デ</span
+        ><span>ド</span><span>バ</span><span>ビ</span><span>ブ</span><span>ベ</span
+        ><span>ボ</span><span>パ</span><span>ピ</span><span>プ</span><span>ペ</span
+        ><span>ポ</span><span>ア</span><span>イ</span><span>ウ</span><span>エ</span
+        ><span>オ</span><span>カ</span><span>キ</span><span>ク</span><span>ケ</span
+        ><span>コ</span><span>サ</span><span>シ</span><span>ス</span><span>セ</span
+        ><span>ソ</span><span>タ</span><span>チ</span><span>ツ</span><span>テ</span
+        ><span>ト</span><span>ナ</span><span>ニ</span><span>ヌ</span><span>ネ</span
+        ><span>ノ</span><span>ハ</span><span>ヒ</span><span>フ</span><span>ヘ</span
+        ><span>ホ</span>
+      </div>
+    </div>
+    <slot />
+
+    <!-- Custom Alert Modal (Neo-Brutalist / Manga Theme) -->
+    <div id="custom-alert-overlay" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200" role="dialog" aria-modal="true">
+      <div id="custom-alert-box" class="w-full max-w-md bg-white border-[4px] border-slate-900 shadow-[8px_8px_0px_rgba(15,23,42,1)] p-6 transform translate-y-4 scale-95 opacity-0 transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <!-- Icon Container (Warning Red) -->
+          <div class="w-12 h-12 bg-red-500 border-[3px] border-slate-900 shadow-[3px_3px_0px_rgba(15,23,42,1)] flex items-center justify-center text-white font-black text-2xl flex-shrink-0 transform -rotate-3 select-none">
+            !
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-xl font-black text-slate-900 uppercase tracking-wide" style="font-family:'Rajdhani',sans-serif;">Peringatan</h3>
+            <p id="custom-alert-message" class="text-slate-800 font-bold mt-2 text-sm whitespace-pre-wrap leading-relaxed"></p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button 
+            id="custom-alert-btn" 
+            class="px-5 py-2.5 font-bold uppercase text-xs tracking-wider text-white cursor-pointer"
+            style="background: var(--ink); border: var(--border-thick); box-shadow: 3px 3px 0px var(--ocean); transition: all 0.1s;"
+            onmouseover="this.style.transform='translate(-2px, -2px)'; this.style.boxShadow='5px 5px 0px var(--ocean)';"
+            onmouseout="this.style.transform='translate(0, 0)'; this.style.boxShadow='3px 3px 0px var(--ocean)';"
+            onmousedown="this.style.transform='translate(2px, 2px)'; this.style.boxShadow='1px 1px 0px var(--ocean)';"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('custom-alert-overlay');
+        const box = document.getElementById('custom-alert-box');
+        const msgEl = document.getElementById('custom-alert-message');
+        const btn = document.getElementById('custom-alert-btn');
+
+        if (!overlay || !box || !msgEl || !btn) return;
+
+        window.alert = function(message) {
+          msgEl.textContent = message;
+          
+          // Show overlay
+          overlay.classList.remove('opacity-0', 'pointer-events-none');
+          overlay.classList.add('opacity-100');
+          
+          // Show box with animation
+          box.classList.remove('translate-y-4', 'scale-95', 'opacity-0');
+          box.classList.add('translate-y-0', 'scale-100', 'opacity-100');
+        };
+
+        function closeAlert() {
+          // Hide box
+          box.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
+          box.classList.add('translate-y-4', 'scale-95', 'opacity-0');
+          
+          // Hide overlay
+          overlay.classList.remove('opacity-100');
+          overlay.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        btn.addEventListener('click', closeAlert);
+        
+        // Close on overlay click
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) closeAlert();
+        });
+
+        // Close on Esc key
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !overlay.classList.contains('pointer-events-none')) {
+            closeAlert();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

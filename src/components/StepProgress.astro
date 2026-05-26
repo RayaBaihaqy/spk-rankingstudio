@@ -1,0 +1,99 @@
+---
+// src/components/StepProgress.astro
+---
+
+<div id="step-progress-container" class="relative z-10 mt-16" style="display:none; background:transparent; border-bottom: none; box-shadow: none; color: var(--text-primary);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
+    <div class="flex items-center justify-center gap-0 font-bold" style="font-family: 'Rajdhani', sans-serif;">
+
+      <!-- Step 1 -->
+      <div class="flex items-center" id="prog-step-1">
+        <div class="flex flex-col items-center">
+          <div id="prog-dot-1" class="w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-200 bg-slate-200 text-slate-500 border-2 border-slate-300">
+            1
+          </div>
+          <span class="text-xs mt-1 font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap" id="prog-label-1">Bobot</span>
+        </div>
+        <!-- Line -->
+        <div class="w-12 sm:w-20 h-2 mx-2 bg-slate-200 border-2 border-slate-300 overflow-hidden relative self-start mt-3">
+          <div id="prog-line-1" class="absolute top-0 bottom-0 left-0 w-0 bg-blue-600 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="flex items-center" id="prog-step-2">
+        <div class="flex flex-col items-center">
+          <div id="prog-dot-2" class="w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-200 bg-slate-200 text-slate-500 border-2 border-slate-300">
+            2
+          </div>
+          <span class="text-xs mt-1 font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap" id="prog-label-2">Matriks X</span>
+        </div>
+        <!-- Line -->
+        <div class="w-12 sm:w-20 h-2 mx-2 bg-slate-200 border-2 border-slate-300 overflow-hidden relative self-start mt-3">
+          <div id="prog-line-2" class="absolute top-0 bottom-0 left-0 w-0 bg-blue-600 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="flex items-center" id="prog-step-3">
+        <div class="flex flex-col items-center">
+          <div id="prog-dot-3" class="w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-200 bg-slate-200 text-slate-500 border-2 border-slate-300">
+            3
+          </div>
+          <span class="text-xs mt-1 font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap" id="prog-label-3">Hasil SAW</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateStepProgress(currentStep) {
+    const container = document.getElementById('step-progress-container');
+    if (container) container.style.display = 'block';
+
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById(`prog-dot-${i}`);
+      const label = document.getElementById(`prog-label-${i}`);
+      const line = document.getElementById(`prog-line-${i}`);
+
+      if (!dot || !label) continue;
+
+      if (i < currentStep) {
+        // Completed
+        dot.className = 'w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-200 bg-blue-600 text-white border-2 border-slate-900 shadow-[2px_2px_0px_rgba(15,23,42,1)]';
+        dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
+        label.className = 'text-xs mt-1 font-bold text-slate-100 uppercase tracking-widest whitespace-nowrap';
+        if (line) {
+          line.style.width = '100%';
+          line.parentElement.className = 'w-12 sm:w-20 h-2 mx-2 bg-slate-200 border-2 border-slate-900 overflow-hidden relative shadow-[2px_2px_0px_rgba(15,23,42,1)] self-start mt-3';
+        }
+      } else if (i === currentStep) {
+        // Active
+        dot.className = 'w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-200 bg-red-500 text-white border-2 border-slate-900 shadow-[2px_2px_0px_rgba(15,23,42,1)] transform scale-110 -rotate-3';
+        dot.innerHTML = i.toString();
+        label.className = 'text-xs mt-1 font-bold text-red-600 uppercase tracking-widest whitespace-nowrap';
+        if (line) {
+          line.style.width = '0%';
+          line.parentElement.className = 'w-12 sm:w-20 h-2 mx-2 bg-slate-200 border-2 border-slate-300 overflow-hidden relative self-start mt-3';
+        }
+      } else {
+        // Pending
+        dot.className = 'w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-200 bg-slate-100 text-slate-400 border-2 border-slate-300';
+        dot.innerHTML = i.toString();
+        label.className = 'text-xs mt-1 font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap';
+        if (line) {
+          line.style.width = '0%';
+          line.parentElement.className = 'w-12 sm:w-20 h-2 mx-2 bg-slate-200 border-2 border-slate-300 overflow-hidden relative self-start mt-3';
+        }
+      }
+    }
+
+    if (typeof window.updateNavProgress === 'function') {
+      window.updateNavProgress(currentStep);
+    }
+  }
+
+  window.updateStepProgress = updateStepProgress;
+</script>
