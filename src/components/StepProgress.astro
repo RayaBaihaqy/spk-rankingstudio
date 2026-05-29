@@ -96,4 +96,39 @@
   }
 
   window.updateStepProgress = updateStepProgress;
+
+  // Config labels per modul
+  const PROGRESS_CONFIGS = {
+    studio: ['Bobot', 'Matriks X', 'Hasil SAW'],
+    genre:  ['Upload Data', 'Perbandingan', 'Hasil Genre'],
+    manga:  ['Upload Data', 'Bobot AHP', 'Hasil Manga'],
+  };
+
+  window.setProgressConfig = function(module) {
+    const labels = PROGRESS_CONFIGS[module] || PROGRESS_CONFIGS.studio;
+    for (let i = 1; i <= 3; i++) {
+      const el = document.getElementById(`prog-label-${i}`);
+      if (el) el.textContent = labels[i - 1];
+    }
+    // Reset dots to pending state
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById(`prog-dot-${i}`);
+      if (dot) {
+        dot.className = 'w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-200 bg-slate-100 text-slate-400 border-2 border-slate-300';
+        dot.innerHTML = i.toString();
+      }
+      const label = document.getElementById(`prog-label-${i}`);
+      if (label) label.className = 'text-xs mt-1 font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap';
+      if (i < 3) {
+        const line = document.getElementById(`prog-line-${i}`);
+        if (line) {
+          line.style.width = '0%';
+          line.parentElement.className = 'w-12 sm:w-20 h-2 mx-2 bg-slate-200 border-2 border-slate-300 overflow-hidden relative self-start mt-3';
+        }
+      }
+    }
+    // Show container
+    const container = document.getElementById('step-progress-container');
+    if (container) container.style.display = 'block';
+  };
 </script>

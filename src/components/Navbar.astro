@@ -25,7 +25,7 @@
       <!-- Reset button -->
       <button
         id="btn-reset-all"
-        onclick="if(confirm('Reset semua data dan mulai dari awal?')){ sessionStorage.clear(); window.location.reload(); }"
+        onclick="window.customConfirm('Reset Data', 'Reset semua data dan mulai dari awal?', () => { sessionStorage.clear(); window.location.reload(); });"
         class="flex items-center gap-2 px-4 py-2 font-bold uppercase text-xs"
         style="background: var(--fire); color: white; border: var(--border-thick); box-shadow: 3px 3px 0px var(--ink); transition: all 0.1s;"
         onmouseover="this.style.transform='translate(-2px, -2px)'; this.style.boxShadow='5px 5px 0px var(--ink)';"

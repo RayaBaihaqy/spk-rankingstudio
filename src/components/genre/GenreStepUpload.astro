@@ -1,0 +1,394 @@
+---
+// src/components/genre/GenreStepUpload.astro
+---
+
+<section id="genre-step-upload" style="display:none; height: 100vh; max-height: 100vh; padding-top: 66px; flex-direction: column; position: relative; overflow: hidden; background: transparent;">
+  <div style="flex:1; align-items:center; justify-content:center; position:relative; z-index:2; padding: 1rem 1rem 100px; display:flex;">
+    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <!-- Left Column: Header -->
+      <div style="text-align:left; display: flex; flex-direction: column; justify-content: center;">
+        <button id="genre-upload-back"
+          style="display:inline-flex; align-items:center; gap:6px; background:transparent; border:none; color:rgba(255,255,255,0.55); font-weight:700; font-size:0.8rem; text-transform:uppercase; cursor:pointer; padding:0; margin-bottom:20px; letter-spacing:0.08em;"
+          onmouseover="this.style.color='#fff'"
+          onmouseout="this.style.color='rgba(255,255,255,0.55)'">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+          </svg>
+          Kembali ke Pilihan Modul
+        </button>
+
+        <h1 style="font-family:'Rajdhani',sans-serif; font-weight:900; line-height:1.1; margin-bottom:1.5rem; color:#ffffff; text-transform: uppercase;">
+          <span style="display:block; font-size:clamp(1.2rem,3vw,1.6rem); font-weight:800; letter-spacing:0.05em; margin-bottom: 6px;">Pemilihan Prioritas</span>
+          <span style="display:block; font-size:clamp(2.2rem,5vw,3.2rem); font-weight:900;">Genre Animasi</span>
+        </h1>
+
+        <p style="color:var(--text-secondary); font-weight: 600; font-size:0.95rem; max-width:460px; line-height:1.6; border: var(--border-thin); background: #e5e5e5; padding: 12px 18px; margin: 0; box-shadow: 3px 3px 0px var(--ink);">
+          Upload data Excel genre animasi, definisikan <span class="manga-highlight" style="background:#f59e0b;">6 kriteria</span>, atur bobot, dan dapatkan prioritas akurat menggunakan AHP dan SAW. Semua dihitung otomatis di browser.
+        </p>
+      </div>
+
+      <!-- Right Column: DROPZONE CARD -->
+      <div class="brutal-card" style="overflow:hidden; position:relative; width: 100%;">
+        <!-- Card header -->
+        <div style="padding:10px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom: var(--border-thick); background: #d4d4d8;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:28px; height:28px; background: var(--ink); color: white; display:flex; align-items:center; justify-content:center; font-family: monospace; font-weight: bold; border-radius: 2px;">
+              >_
+            </div>
+            <div>
+              <p style="font-weight:800; color:var(--ink); font-size:1rem; margin:0; text-transform: uppercase; font-family: 'Rajdhani', sans-serif;">Upload Data</p>
+            </div>
+          </div>
+          <div style="font-weight: 700; font-size: 0.75rem; color: var(--ink); background: #cbd5e1; padding: 2px 8px; border: var(--border-thin);">
+            .XLSX / .CSV
+          </div>
+        </div>
+
+        <!-- Dropzone -->
+        <div style="padding:12px 20px;">
+          <div id="genre-dropzone" style="position:relative; border: 3px dashed var(--ink); background: #e5e5e5; min-height:130px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.15s;"
+            onmouseover="this.style.background='#d4d4d8'; this.style.transform='scale(1.01)'"
+            onmouseout="this.style.background='#e5e5e5'; this.style.transform='scale(1)'"
+            role="button" tabindex="0">
+            <input type="file" id="genre-file-input" accept=".xlsx,.xls,.csv" style="position:absolute; inset:0; opacity:0; cursor:pointer; z-index:5;"/>
+
+            <!-- Idle -->
+            <div id="genre-dz-idle" style="text-align:center; padding:0.75rem 1rem;">
+              <div style="width:44px; height:44px; margin:0 auto 0.5rem; background:#f59e0b; border:var(--border-thick); box-shadow:3px 3px 0px var(--ink); display:flex; align-items:center; justify-content:center; transform:rotate(-5deg);" class="anim-float">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+              </div>
+              <p style="color:var(--ink); font-weight:800; font-size:1rem; margin:0 0 2px; font-family:'Rajdhani',sans-serif; text-transform:uppercase;">Drag &amp; Drop File Excel</p>
+              <p style="color:var(--text-secondary); font-weight:600; font-size:0.8rem; margin:0;">atau klik area ini untuk memilih file</p>
+            </div>
+
+            <!-- Loading -->
+            <div id="genre-dz-loading" style="display:none; text-align:center; padding:1.5rem;">
+              <div style="width:36px; height:36px; margin:0 auto 8px; border:4px solid var(--ink); border-top-color:#f59e0b;" class="animate-spin-genre"></div>
+              <p style="color:var(--ink); font-weight:800; font-size:0.9rem; font-family:'Rajdhani',sans-serif; text-transform:uppercase;">Membaca file...</p>
+            </div>
+
+            <!-- Success -->
+            <div id="genre-dz-success" style="display:none; text-align:center; padding:1.5rem;">
+              <div style="width:44px; height:44px; margin:0 auto 8px; background:#22c55e; border:var(--border-thick); box-shadow:3px 3px 0px var(--ink); display:flex; align-items:center; justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p style="color:var(--ink); font-weight:800; font-size:1rem; margin:0 0 2px; font-family:'Rajdhani',sans-serif; text-transform:uppercase;" id="genre-file-name">File terbaca!</p>
+              <p style="color:var(--text-secondary); font-weight:600; font-size:0.8rem; margin:0;" id="genre-file-info"></p>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:0 20px 12px;">
+          <button id="genre-use-sample" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 16px; border:var(--border-thick); background:#f8fafc; color:var(--ink); font-weight:800; font-size:0.85rem; cursor:pointer; font-family:'Rajdhani',sans-serif; text-transform:uppercase; transition:all 0.1s;"
+            onmouseover="this.style.background='#f1f5f9';"
+            onmouseout="this.style.background='#f8fafc';">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            COBA DENGAN DATA SAMPLE (15 GENRE)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Genre Mapping Modal Overlay -->
+  <div id="genre-mapping-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.8); z-index:50; flex-direction:column; align-items:center; justify-content:center; padding:1rem;">
+    <div class="brutal-card w-full p-5" style="max-width:600px; max-height:90vh; overflow-y:auto;">
+      <div class="flex items-center justify-between mb-4 border-b-2 border-slate-900 pb-2">
+        <h3 class="font-black text-slate-900 uppercase tracking-widest text-lg">🗂️ Mapping Kolom Excel (Genre)</h3>
+        <button id="genre-map-close" class="text-red-500 font-black text-xl hover:text-red-700">&times;</button>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Nama Genre -->
+        <div>
+          <label class="block text-xs font-black text-slate-900 mb-1.5 uppercase tracking-wide">Nama Genre <span class="text-red-600">*</span></label>
+          <select id="genre-map-name" class="w-full border-[3px] border-slate-900 px-3 py-2 text-sm font-bold text-slate-900 bg-white focus:outline-none">
+            <option value="">-- Pilih Kolom --</option>
+          </select>
+        </div>
+        <!-- C1 -->
+        <div>
+          <label class="block text-xs font-black text-slate-900 mb-1.5 uppercase tracking-wide">C1 — Popularitas <span class="text-red-600">*</span></label>
+          <select id="genre-map-c1" class="w-full border-[3px] border-slate-900 px-3 py-2 text-sm font-bold text-slate-900 bg-white focus:outline-none">
+            <option value="">-- Pilih Kolom --</option>
+          </select>
+        </div>
+        <!-- C2 -->
+        <div>
+          <label class="block text-xs font-black text-slate-900 mb-1.5 uppercase tracking-wide">C2 — Rating <span class="text-red-600">*</span></label>
+          <select id="genre-map-c2" class="w-full border-[3px] border-slate-900 px-3 py-2 text-sm font-bold text-slate-900 bg-white focus:outline-none">
+            <option value="">-- Pilih Kolom --</option>
+          </select>
+        </div>
+        <!-- C3 -->
+        <div>
+          <label class="block text-xs font-black text-slate-900 mb-1.5 uppercase tracking-wide">C3 — Jml Anime <span class="text-red-600">*</span></label>
+          <select id="genre-map-c3" class="w-full border-[3px] border-slate-900 px-3 py-2 text-sm font-bold text-slate-900 bg-white focus:outline-none">
+            <option value="">-- Pilih Kolom --</option>
+          </select>
+        </div>
+        <!-- C4 -->
+        <div>
+          <label class="block text-xs font-black text-slate-900 mb-1.5 uppercase tracking-wide">C4 — Tren <span class="text-red-600">*</span></label>
+          <select id="genre-map-c4" class="w-full border-[3px] border-slate-900 px-3 py-2 text-sm font-bold text-slate-900 bg-white focus:outline-none">
+            <option value="">-- Pilih Kolom --</option>
+          </select>
+        </div>
+        <!-- C5 -->
+        <div>
+          <label class="block text-xs font-black text-slate-900 mb-1.5 uppercase tracking-wide">C5 — % Rating >= 7 <span class="text-red-600">*</span></label>
+          <select id="genre-map-c5" class="w-full border-[3px] border-slate-900 px-3 py-2 text-sm font-bold text-slate-900 bg-white focus:outline-none">
+            <option value="">-- Pilih Kolom --</option>
+          </select>
+        </div>
+        <!-- C6 -->
+        <div>
+          <label class="block text-xs font-black text-red-700 mb-1.5 uppercase tracking-wide">C6 — % Rating < 6 (Cost) <span class="text-red-600">*</span></label>
+          <select id="genre-map-c6" class="w-full border-[3px] border-red-400 px-3 py-2 text-sm font-bold text-red-700 bg-red-50 focus:outline-none">
+            <option value="">-- Pilih Kolom --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div id="genre-map-error" class="mt-4 p-3 bg-red-100 border-2 border-slate-900 hidden flex items-center gap-2">
+        <span class="w-6 h-6 bg-red-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0">!</span>
+        <span class="font-black text-red-700 text-sm uppercase" id="genre-map-error-text"></span>
+      </div>
+
+      <!-- Confirm -->
+      <button id="genre-map-confirm"
+        style="width:100%; margin-top:16px; padding:12px 24px; background:#f59e0b; color:var(--ink); border:var(--border-thick); font-weight:800; font-size:0.95rem; text-transform:uppercase; letter-spacing:0.05em; box-shadow:var(--shadow-offset); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.1s;"
+        onmouseover="this.style.transform='translate(-2px,-2px)'; this.style.boxShadow='6px 6px 0px var(--ink)'"
+        onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px var(--ink)'">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        LANJUT KE BOBOT AHP
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  // =============================================
+  // Genre Upload — State & Logic
+  // =============================================
+
+  const GENRE_MAP_IDS  = ['genre-map-name','genre-map-c1','genre-map-c2','genre-map-c3','genre-map-c4','genre-map-c5','genre-map-c6'];
+  const GENRE_MAP_KEYS = ['name','c1','c2','c3','c4','c5','c6'];
+  const GENRE_GUESS_MAPS = {
+    'genre-map-name': ['nama', 'name', 'genre', 'kategori'],
+    'genre-map-c1':   ['popul', 'popularitas', 'c1'],
+    'genre-map-c2':   ['rating', 'c2'],
+    'genre-map-c3':   ['jml', 'jumlah', 'anime', 'c3'],
+    'genre-map-c4':   ['tren', 'trend', 'c4'],
+    'genre-map-c5':   ['>=', '> 7', '>=7', 'c5'],
+    'genre-map-c6':   ['<', '< 6', '<6', 'c6'],
+  };
+
+  const GENRE_SAMPLE_DATA = [
+    { nama: 'Action', c1: 90, c2: 8.5, c3: 1500, c4: 85, c5: 70, c6: 30 },
+    { nama: 'Adventure', c1: 85, c2: 8.2, c3: 1200, c4: 80, c5: 65, c6: 35 },
+    { nama: 'Comedy', c1: 88, c2: 8.0, c3: 2000, c4: 75, c5: 60, c6: 40 },
+    { nama: 'Drama', c1: 82, c2: 8.4, c3: 1100, c4: 70, c5: 75, c6: 25 },
+    { nama: 'Fantasy', c1: 89, c2: 8.3, c3: 1400, c4: 88, c5: 68, c6: 32 },
+    { nama: 'Horror', c1: 75, c2: 7.5, c3: 500, c4: 60, c5: 45, c6: 55 },
+    { nama: 'Mystery', c1: 78, c2: 8.1, c3: 700, c4: 65, c5: 60, c6: 40 },
+    { nama: 'Psychological', c1: 72, c2: 8.6, c3: 400, c4: 55, c5: 80, c6: 20 },
+    { nama: 'Romance', c1: 84, c2: 8.0, c3: 1600, c4: 72, c5: 55, c6: 45 },
+    { nama: 'Sci-Fi', c1: 80, c2: 8.2, c3: 900, c4: 70, c5: 65, c6: 35 },
+    { nama: 'Slice of Life', c1: 81, c2: 8.3, c3: 1300, c4: 68, c5: 70, c6: 30 },
+    { nama: 'Sports', c1: 79, c2: 8.4, c3: 600, c4: 74, c5: 72, c6: 28 },
+    { nama: 'Supernatural', c1: 86, c2: 8.1, c3: 1100, c4: 82, c5: 62, c6: 38 },
+    { nama: 'Thriller', c1: 76, c2: 8.5, c3: 450, c4: 62, c5: 78, c6: 22 },
+    { nama: 'Mecha', c1: 70, c2: 7.8, c3: 550, c4: 50, c5: 50, c6: 50 },
+  ];
+
+  let genreRawData = null; // { headers, rows }
+
+  function setGenreDzState(state, filename = '', info = '') {
+    const idle    = document.getElementById('genre-dz-idle');
+    const loading = document.getElementById('genre-dz-loading');
+    const success = document.getElementById('genre-dz-success');
+    if (idle)    idle.style.display    = state === 'idle'    ? 'block' : 'none';
+    if (loading) loading.style.display = state === 'loading' ? 'flex'  : 'none';
+    if (success) success.style.display = state === 'success' ? 'block' : 'none';
+    if (state === 'success') {
+      const fn = document.getElementById('genre-file-name');
+      const fi = document.getElementById('genre-file-info');
+      if (fn) fn.textContent = filename;
+      if (fi) fi.textContent = info;
+    }
+  }
+
+  function populateGenreSelects(headers) {
+    GENRE_MAP_IDS.forEach(id => {
+      const sel = document.getElementById(id);
+      if (!sel) return;
+      sel.innerHTML = `<option value="">-- Pilih Kolom --</option>`;
+      headers.forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h; opt.textContent = h.toUpperCase();
+        sel.appendChild(opt);
+      });
+    });
+    // Auto-guess
+    Object.entries(GENRE_GUESS_MAPS).forEach(([selectId, keywords]) => {
+      const sel = document.getElementById(selectId);
+      if (!sel || sel.value) return;
+      for (const h of headers) {
+        if (keywords.some(k => h.toLowerCase().includes(k))) {
+          sel.value = h; break;
+        }
+      }
+    });
+  }
+
+  async function handleGenreFile(file) {
+    setGenreDzState('loading');
+    let attempts = 0;
+    while (typeof XLSX === 'undefined' && attempts < 20) {
+      await new Promise(r => setTimeout(r, 100)); attempts++;
+    }
+    if (typeof XLSX === 'undefined') {
+      setGenreDzState('idle'); alert('Library Excel belum dimuat. Refresh halaman.'); return;
+    }
+    try {
+      const buffer = await file.arrayBuffer();
+      const wb = XLSX.read(new Uint8Array(buffer), { type: 'array' });
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+      if (!jsonData || jsonData.length < 2) {
+        setGenreDzState('idle'); alert('File kosong atau tidak valid.'); return;
+      }
+      const headers = jsonData[0].map(h => String(h).trim()).filter(h => h);
+      const rawRows = jsonData.slice(1).filter(row => row.some(c => c !== '' && c !== null));
+      const rows = rawRows.map(row => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = row[i] !== undefined ? row[i] : '');
+        return obj;
+      });
+      genreRawData = { headers, rows, filename: file.name };
+      setGenreDzState('success', file.name, `${rows.length} baris data ditemukan`);
+      populateGenreSelects(headers);
+      
+      const modal = document.getElementById('genre-mapping-modal');
+      if (modal) modal.style.display = 'flex';
+    } catch (err) {
+      setGenreDzState('idle'); alert('Error membaca file: ' + err.message);
+    }
+  }
+
+  function loadGenreSampleData() {
+    try {
+      const headers = ['nama', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6'];
+      genreRawData = { headers, rows: GENRE_SAMPLE_DATA.map(d => ({...d})), filename: 'sample_genre.xlsx' };
+      setGenreDzState('success', 'sample_genre.xlsx', `${GENRE_SAMPLE_DATA.length} genre sample dimuat`);
+      populateGenreSelects(headers);
+      const modal = document.getElementById('genre-mapping-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+      } else {
+        alert('Error: Modal element not found in DOM.');
+      }
+    } catch(err) {
+      alert('Error in loadGenreSampleData: ' + err.message);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('genre-upload-back')?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('spk:back-to-hero'));
+    });
+
+    const dz    = document.getElementById('genre-dropzone');
+    const input = document.getElementById('genre-file-input');
+
+    ['dragenter','dragover'].forEach(evt => {
+      dz?.addEventListener(evt, (e) => { e.preventDefault(); dz.style.borderColor='#f59e0b'; dz.style.background='#fef3c7'; });
+    });
+    ['dragleave','dragend'].forEach(evt => {
+      dz?.addEventListener(evt, () => { dz.style.borderColor='var(--ink)'; dz.style.background='#e5e5e5'; });
+    });
+    dz?.addEventListener('drop', (e) => {
+      e.preventDefault(); dz.style.borderColor='var(--ink)'; dz.style.background='#e5e5e5';
+      const file = e.dataTransfer?.files[0];
+      if (file) handleGenreFile(file);
+    });
+    input?.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file) handleGenreFile(file);
+    });
+
+    document.getElementById('genre-use-sample')?.addEventListener('click', loadGenreSampleData);
+
+    document.getElementById('genre-map-close')?.addEventListener('click', () => {
+      const modal = document.getElementById('genre-mapping-modal');
+      if (modal) modal.style.display = 'none';
+      setGenreDzState('idle');
+    });
+
+    document.getElementById('genre-map-confirm')?.addEventListener('click', () => {
+      const vals = {};
+      const errors = [];
+      GENRE_MAP_IDS.forEach((id, i) => {
+        const sel = document.getElementById(id);
+        const v = sel?.value || '';
+        vals[GENRE_MAP_KEYS[i]] = v;
+        if (!v) errors.push(`Kolom ${GENRE_MAP_KEYS[i].toUpperCase()} wajib dipilih.`);
+      });
+
+      const errEl   = document.getElementById('genre-map-error');
+      const errText = document.getElementById('genre-map-error-text');
+      if (errors.length) {
+        errEl?.classList.remove('hidden');
+        if (errText) errText.textContent = errors[0];
+        return;
+      }
+      errEl?.classList.add('hidden');
+
+      if (!genreRawData) return;
+
+      const names = [];
+      const matrixX = [];
+      const criteriaKeys = ['c1','c2','c3','c4','c5','c6'];
+
+      genreRawData.rows.forEach(row => {
+        const n = String(row[vals.name] || '').trim();
+        if (!n) return;
+        names.push(n);
+        matrixX.push(criteriaKeys.map(k => {
+          const raw = row[vals[k]];
+          const parsed = parseFloat(String(raw).replace(/,/g, '.'));
+          return isNaN(parsed) ? 0 : parsed;
+        }));
+      });
+
+      if (names.length < 2) {
+        alert('Minimal 2 genre diperlukan untuk perbandingan.'); return;
+      }
+
+      sessionStorage.setItem('spk_genreNames',   JSON.stringify(names));
+      sessionStorage.setItem('spk_genreMatrixX',  JSON.stringify(matrixX));
+      sessionStorage.setItem('spk_genreMapping',  JSON.stringify(vals));
+
+      const modal = document.getElementById('genre-mapping-modal');
+      if (modal) modal.style.display = 'none';
+
+      window.dispatchEvent(new CustomEvent('spk:genre-goto-step', { detail: { step: 2 } }));
+    });
+  });
+</script>
+
+<style>
+  .animate-spin-genre {
+    animation: spin-genre 1s linear infinite;
+  }
+  @keyframes spin-genre {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>

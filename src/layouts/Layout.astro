@@ -276,6 +276,44 @@ import '../styles/global.css';
       </div>
     </div>
 
+    <!-- Custom Confirm Modal -->
+    <div id="custom-confirm-overlay" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200" role="dialog" aria-modal="true">
+      <div id="custom-confirm-box" class="w-full max-w-md bg-white border-[4px] border-slate-900 shadow-[8px_8px_0px_rgba(15,23,42,1)] p-6 transform translate-y-4 scale-95 opacity-0 transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <!-- Icon Container (Question Amber) -->
+          <div class="w-12 h-12 bg-amber-400 border-[3px] border-slate-900 shadow-[3px_3px_0px_rgba(15,23,42,1)] flex items-center justify-center text-slate-900 font-black text-2xl flex-shrink-0 transform rotate-3 select-none">
+            ?
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 id="custom-confirm-title" class="text-xl font-black text-slate-900 uppercase tracking-wide" style="font-family:'Rajdhani',sans-serif;">Konfirmasi</h3>
+            <p id="custom-confirm-message" class="text-slate-800 font-bold mt-2 text-sm whitespace-pre-wrap leading-relaxed"></p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end gap-3">
+          <button 
+            id="custom-confirm-cancel" 
+            class="px-5 py-2.5 font-bold uppercase text-xs tracking-wider text-slate-900 bg-white cursor-pointer"
+            style="border: var(--border-thick); box-shadow: 3px 3px 0px rgba(15,23,42,1); transition: all 0.1s;"
+            onmouseover="this.style.transform='translate(-2px, -2px)'; this.style.boxShadow='5px 5px 0px rgba(15,23,42,1)';"
+            onmouseout="this.style.transform='translate(0, 0)'; this.style.boxShadow='3px 3px 0px rgba(15,23,42,1)';"
+            onmousedown="this.style.transform='translate(2px, 2px)'; this.style.boxShadow='1px 1px 0px rgba(15,23,42,1)';"
+          >
+            Batal
+          </button>
+          <button 
+            id="custom-confirm-ok" 
+            class="px-5 py-2.5 font-bold uppercase text-xs tracking-wider text-white cursor-pointer"
+            style="background: var(--fire); border: var(--border-thick); box-shadow: 3px 3px 0px var(--ink); transition: all 0.1s;"
+            onmouseover="this.style.transform='translate(-2px, -2px)'; this.style.boxShadow='5px 5px 0px var(--ink)';"
+            onmouseout="this.style.transform='translate(0, 0)'; this.style.boxShadow='3px 3px 0px var(--ink)';"
+            onmousedown="this.style.transform='translate(2px, 2px)'; this.style.boxShadow='1px 1px 0px var(--ink)';"
+          >
+            Ya, Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script is:inline>
       document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('custom-alert-overlay');
@@ -319,7 +357,56 @@ import '../styles/global.css';
           if (e.key === 'Escape' && !overlay.classList.contains('pointer-events-none')) {
             closeAlert();
           }
+          if (e.key === 'Escape' && confirmOverlay && !confirmOverlay.classList.contains('pointer-events-none')) {
+            closeConfirm();
+          }
         });
+
+        // ==========================================
+        // Custom Confirm Logic
+        // ==========================================
+        const confirmOverlay = document.getElementById('custom-confirm-overlay');
+        const confirmBox = document.getElementById('custom-confirm-box');
+        const confirmTitleEl = document.getElementById('custom-confirm-title');
+        const confirmMsgEl = document.getElementById('custom-confirm-message');
+        const confirmOkBtn = document.getElementById('custom-confirm-ok');
+        const confirmCancelBtn = document.getElementById('custom-confirm-cancel');
+        let confirmCallback = null;
+
+        window.customConfirm = function(title, message, callback) {
+          if (!confirmOverlay || !confirmBox) return;
+          if (confirmTitleEl) confirmTitleEl.textContent = title;
+          if (confirmMsgEl) confirmMsgEl.textContent = message;
+          confirmCallback = callback;
+          
+          confirmOverlay.classList.remove('opacity-0', 'pointer-events-none');
+          confirmOverlay.classList.add('opacity-100');
+          confirmBox.classList.remove('translate-y-4', 'scale-95', 'opacity-0');
+          confirmBox.classList.add('translate-y-0', 'scale-100', 'opacity-100');
+        };
+
+        function closeConfirm() {
+          if (!confirmOverlay || !confirmBox) return;
+          confirmBox.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
+          confirmBox.classList.add('translate-y-4', 'scale-95', 'opacity-0');
+          confirmOverlay.classList.remove('opacity-100');
+          confirmOverlay.classList.add('opacity-0', 'pointer-events-none');
+          confirmCallback = null;
+        }
+
+        if (confirmCancelBtn) confirmCancelBtn.addEventListener('click', closeConfirm);
+        if (confirmOkBtn) {
+          confirmOkBtn.addEventListener('click', () => {
+            if (typeof confirmCallback === 'function') confirmCallback();
+            closeConfirm();
+          });
+        }
+        
+        if (confirmOverlay) {
+          confirmOverlay.addEventListener('click', (e) => {
+            if (e.target === confirmOverlay) closeConfirm();
+          });
+        }
       });
     </script>
   </body>
