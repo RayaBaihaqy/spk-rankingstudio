@@ -211,8 +211,15 @@
     const minCol = Array.from({ length: m }, (_, j) => Math.min(...matrixX.map(r => r[j] || 0)));
 
     const matrixR = matrixX.map(row => row.map((val, j) => {
-      if (genre_CRITERIA_TYPES[j] === 'Benefit') return maxCol[j] === 0 ? 0 : val / maxCol[j];
-      else return val === 0 ? 0 : minCol[j] / val;
+      if (genre_CRITERIA_TYPES[j] === 'Benefit') {
+        // Benefit: min-max normalization
+        const denom = maxCol[j] - minCol[j];
+        return denom === 0 ? 0 : (val - minCol[j]) / denom;
+      } else {
+        // Cost: (max - value) / (max - min)
+        const denom = maxCol[j] - minCol[j];
+        return denom === 0 ? 0 : (maxCol[j] - val) / denom;
+      }
     }));
 
     const valuesV = matrixR.map(row => row.reduce((sum, rij, j) => sum + rij * weights[j], 0));
