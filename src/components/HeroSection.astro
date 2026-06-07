@@ -2,148 +2,291 @@
 // src/components/HeroSection.astro
 ---
 
-<section id="hero-section" style="display:none; height: 100vh; max-height: 100vh; padding-top: 66px; flex-direction: column; position: relative; overflow: hidden; background: transparent;">
-
+<section
+  id="hero-section"
+  style="display:none; height: 100vh; max-height: 100vh; padding-top: 66px; flex-direction: column; position: relative; overflow: hidden; background: transparent;"
+>
   <!-- Manga Panel Decorators -->
-  <div style="position:absolute; top:20px; left:20px; width:40px; height:40px; border-top: 4px solid #ffffff; border-left: 4px solid #ffffff; z-index:1; pointer-events:none;"></div>
-  <div style="position:absolute; bottom:110px; right:20px; width:40px; height:40px; border-bottom: 4px solid #ffffff; border-right: 4px solid #ffffff; z-index:1; pointer-events:none;"></div>
+  <div
+    style="position:absolute; top:20px; left:20px; width:40px; height:40px; border-top: 4px solid #ffffff; border-left: 4px solid #ffffff; z-index:1; pointer-events:none;"
+  >
+  </div>
+  <div
+    style="position:absolute; bottom:110px; right:20px; width:40px; height:40px; border-bottom: 4px solid #ffffff; border-right: 4px solid #ffffff; z-index:1; pointer-events:none;"
+  >
+  </div>
 
   <!-- Ornamen Anime Kanan Atas -->
-  <img src="/assets/ornamen-1.png" alt="" style="position:absolute; top:-20px; right:-20px; width:320px; height:auto; z-index:1; pointer-events:none; opacity:0.9; filter: drop-shadow(4px 4px 0px var(--ink)); transform: rotate(5deg);" onerror="this.style.display='none'" class="anim-float" />
+  <img
+    src="/assets/ornamen-1.png"
+    alt=""
+    style="position:absolute; top:-20px; right:-20px; width:320px; height:auto; z-index:1; pointer-events:none; opacity:0.9; filter: drop-shadow(4px 4px 0px var(--ink)); transform: rotate(5deg);"
+    onerror="this.style.display='none'"
+    class="anim-float"
+  />
 
   <!-- Ornamen Anime Kiri Bawah -->
-  <img src="/assets/ornamen-2.png" alt="" style="position:absolute; bottom:20px; left:-20px; width:260px; height:auto; z-index:1; pointer-events:none; opacity:0.9; filter: drop-shadow(4px 4px 0px var(--ink)); transform: rotate(-5deg);" onerror="this.style.display='none'" class="anim-float" />
+  <img
+    src="/assets/ornamen-2.png"
+    alt=""
+    style="position:absolute; bottom:20px; left:-20px; width:260px; height:auto; z-index:1; pointer-events:none; opacity:0.9; filter: drop-shadow(4px 4px 0px var(--ink)); transform: rotate(-5deg);"
+    onerror="this.style.display='none'"
+    class="anim-float"
+  />
 
   <!-- ==========================================
        PANEL 1: MODULE SELECTOR (default view)
        ========================================== -->
-  <div id="hero-module-selector" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; z-index:2; padding:0 1rem 60px;">
-
+  <div
+    id="hero-module-selector"
+    style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; z-index:2; padding:0 1rem 60px;"
+  >
     <!-- Title Badge -->
     <div style="margin-bottom:14px; text-align:center;" class="anim-slide-up">
-      <span style="display:inline-block; background:#e5e5e5; border:var(--border-thick); padding:4px 18px; box-shadow:4px 4px 0px var(--ink); font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--ink);">
+      <span
+        style="display:inline-block; background:#e5e5e5; border:var(--border-thick); padding:4px 18px; box-shadow:4px 4px 0px var(--ink); font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--ink);"
+      >
         SISTEM PENDUKUNG KEPUTUSAN
       </span>
     </div>
 
     <!-- Main Heading -->
-    <h1 style="font-family:'Rajdhani',sans-serif; font-weight:900; text-transform:uppercase; color:#ffffff; text-align:center; font-size:clamp(2rem,5vw,3.5rem); line-height:1.05; margin:0 0 16px; letter-spacing:0.02em;" class="anim-slide-up">
+    <h1
+      style="font-family:'Rajdhani',sans-serif; font-weight:900; text-transform:uppercase; color:#ffffff; text-align:center; font-size:clamp(2rem,5vw,3.5rem); line-height:1.05; margin:0 0 16px; letter-spacing:0.02em;"
+      class="anim-slide-up"
+    >
       PILIH MODUL ANALISIS
     </h1>
 
     <!-- 3 Module Cards Grid -->
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(272px, 1fr)); gap:20px; max-width:940px; width:100%; padding:0 4px;">
-
+    <div
+      style="display:grid; grid-template-columns:repeat(auto-fit, minmax(272px, 1fr)); gap:20px; max-width:940px; width:100%; padding:0 4px;"
+    >
       <!-- CARD 1: Prioritas Genre (AHP) -->
-      <div id="module-card-genre"
+      <div
+        id="module-card-genre"
         onclick="window.dispatchEvent(new CustomEvent('spk:start-module', {detail:{moduleId:'genre'}}))"
         style="cursor:pointer; background:#fff; border:var(--border-thick); border-top:5px solid #f59e0b; box-shadow:var(--shadow-offset); transition:transform 0.15s, box-shadow 0.15s; position:relative; overflow:hidden;"
         onmouseover="this.style.transform='translate(-3px,-3px)'; this.style.boxShadow='7px 7px 0px var(--ink)'"
-        onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px var(--ink)'">
-        <div style="background:#fef3c7; border-bottom:var(--border-thick); padding:8px 16px; display:flex; align-items:center; justify-content:space-between;">
-          <span style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#92400e;">Genre</span>
-          <span style="background:#f59e0b; color:#fff; border:var(--border-thin); padding:2px 10px; font-weight:800; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; box-shadow:2px 2px 0px var(--ink);">AHP + SAW</span>
+        onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px var(--ink)'"
+      >
+        <div
+          style="background:#fef3c7; border-bottom:var(--border-thick); padding:8px 16px; display:flex; align-items:center; justify-content:space-between;"
+        >
+          <span
+            style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#92400e;"
+            >Genre</span
+          >
+          <span
+            style="background:#f59e0b; color:#fff; border:var(--border-thin); padding:2px 10px; font-weight:800; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; box-shadow:2px 2px 0px var(--ink);"
+            >AHP + SAW</span
+          >
         </div>
         <div style="padding:20px 18px 22px;">
           <div style="font-size:2.5rem; margin-bottom:10px;">🎭</div>
-          <h3 style="font-family:'Rajdhani',sans-serif; font-weight:900; font-size:1.4rem; text-transform:uppercase; color:var(--ink); margin:0 0 8px; letter-spacing:0.03em;">Prioritas Genre</h3>
-          <p style="color:var(--text-secondary); font-weight:600; font-size:0.82rem; line-height:1.6; margin:0 0 18px;">Tentukan genre anime/manga favoritmu berdasarkan perbandingan berpasangan (Saaty). Dapatkan urutan prioritas genre secara ilmiah.</p>
-          <div style="display:flex; align-items:center; gap:6px; padding-top:14px; border-top:2px solid #e2e8f0;">
+          <h3
+            style="font-family:'Rajdhani',sans-serif; font-weight:900; font-size:1.4rem; text-transform:uppercase; color:var(--ink); margin:0 0 8px; letter-spacing:0.03em;"
+          >
+            Prioritas Genre
+          </h3>
+          <p
+            style="color:var(--text-secondary); font-weight:600; font-size:0.82rem; line-height:1.6; margin:0 0 18px;"
+          >
+            Tentukan genre anime/manga yang sedang tren berdasarkan perbandingan
+            berpasangan (Saaty). Dapatkan urutan prioritas genre secara ilmiah.
+          </p>
+          <div
+            style="display:flex; align-items:center; gap:6px; padding-top:14px; border-top:2px solid #e2e8f0;"
+          >
             <div style="flex:1; height:3px; background:#f59e0b;"></div>
-            <span style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.8rem; text-transform:uppercase; color:#92400e;">Mulai Analisis →</span>
+            <span
+              style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.8rem; text-transform:uppercase; color:#92400e;"
+              >Mulai Analisis →</span
+            >
           </div>
         </div>
       </div>
 
       <!-- CARD 2: Prioritas Manga (AHP + SAW) -->
-      <div id="module-card-manga"
+      <div
+        id="module-card-manga"
         onclick="window.dispatchEvent(new CustomEvent('spk:start-module', {detail:{moduleId:'manga'}}))"
         style="cursor:pointer; background:#fff; border:var(--border-thick); border-top:5px solid #10b981; box-shadow:var(--shadow-offset); transition:transform 0.15s, box-shadow 0.15s; position:relative; overflow:hidden;"
         onmouseover="this.style.transform='translate(-3px,-3px)'; this.style.boxShadow='7px 7px 0px var(--ink)'"
-        onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px var(--ink)'">
-        <div style="background:#d1fae5; border-bottom:var(--border-thick); padding:8px 16px; display:flex; align-items:center; justify-content:space-between;">
-          <span style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#065f46;">Manga</span>
-          <span style="background:#10b981; color:#fff; border:var(--border-thin); padding:2px 10px; font-weight:800; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; box-shadow:2px 2px 0px var(--ink);">AHP + SAW</span>
+        onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px var(--ink)'"
+      >
+        <div
+          style="background:#d1fae5; border-bottom:var(--border-thick); padding:8px 16px; display:flex; align-items:center; justify-content:space-between;"
+        >
+          <span
+            style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#065f46;"
+            >Manga</span
+          >
+          <span
+            style="background:#10b981; color:#fff; border:var(--border-thin); padding:2px 10px; font-weight:800; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; box-shadow:2px 2px 0px var(--ink);"
+            >AHP + SAW</span
+          >
         </div>
         <div style="padding:20px 18px 22px;">
           <div style="font-size:2.5rem; margin-bottom:10px;">📚</div>
-          <h3 style="font-family:'Rajdhani',sans-serif; font-weight:900; font-size:1.4rem; text-transform:uppercase; color:var(--ink); margin:0 0 8px; letter-spacing:0.03em;">Prioritas Manga</h3>
-          <p style="color:var(--text-secondary); font-weight:600; font-size:0.82rem; line-height:1.6; margin:0 0 18px;">Rangking manga terbaik menggunakan 6 kriteria: Skor, Members, Favorites, Chapter, Tahun, dan Rank MAL dengan bobot AHP.</p>
-          <div style="display:flex; align-items:center; gap:6px; padding-top:14px; border-top:2px solid #e2e8f0;">
+          <h3
+            style="font-family:'Rajdhani',sans-serif; font-weight:900; font-size:1.4rem; text-transform:uppercase; color:var(--ink); margin:0 0 8px; letter-spacing:0.03em;"
+          >
+            Prioritas Manga
+          </h3>
+          <p
+            style="color:var(--text-secondary); font-weight:600; font-size:0.82rem; line-height:1.6; margin:0 0 18px;"
+          >
+            Rangking manga terbaik menggunakan 6 kriteria: Skor, Members,
+            Favorites, Chapter, Tahun, dan Rank MAL dengan bobot AHP.
+          </p>
+          <div
+            style="display:flex; align-items:center; gap:6px; padding-top:14px; border-top:2px solid #e2e8f0;"
+          >
             <div style="flex:1; height:3px; background:#10b981;"></div>
-            <span style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.8rem; text-transform:uppercase; color:#065f46;">Mulai Analisis →</span>
+            <span
+              style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.8rem; text-transform:uppercase; color:#065f46;"
+              >Mulai Analisis →</span
+            >
           </div>
         </div>
       </div>
 
       <!-- CARD 3: Ranking Studio (SAW) -->
-      <div id="module-card-studio"
+      <div
+        id="module-card-studio"
         onclick="window.dispatchEvent(new CustomEvent('spk:start-module', {detail:{moduleId:'studio'}}))"
         style="cursor:pointer; background:#fff; border:var(--border-thick); border-top:5px solid #2563eb; box-shadow:var(--shadow-offset); transition:transform 0.15s, box-shadow 0.15s; position:relative; overflow:hidden;"
         onmouseover="this.style.transform='translate(-3px,-3px)'; this.style.boxShadow='7px 7px 0px var(--ink)'"
-        onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px var(--ink)'">
-        <div style="background:#dbeafe; border-bottom:var(--border-thick); padding:8px 16px; display:flex; align-items:center; justify-content:space-between;">
-          <span style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#1e3a8a;">Studio</span>
-          <span style="background:#2563eb; color:#fff; border:var(--border-thin); padding:2px 10px; font-weight:800; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; box-shadow:2px 2px 0px var(--ink);">SAW</span>
+        onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px var(--ink)'"
+      >
+        <div
+          style="background:#dbeafe; border-bottom:var(--border-thick); padding:8px 16px; display:flex; align-items:center; justify-content:space-between;"
+        >
+          <span
+            style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#1e3a8a;"
+            >Studio</span
+          >
+          <span
+            style="background:#2563eb; color:#fff; border:var(--border-thin); padding:2px 10px; font-weight:800; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; box-shadow:2px 2px 0px var(--ink);"
+            >SAW</span
+          >
         </div>
         <div style="padding:20px 18px 22px;">
           <div style="font-size:2.5rem; margin-bottom:10px;">🎬</div>
-          <h3 style="font-family:'Rajdhani',sans-serif; font-weight:900; font-size:1.4rem; text-transform:uppercase; color:var(--ink); margin:0 0 8px; letter-spacing:0.03em;">Ranking Studio</h3>
-          <p style="color:var(--text-secondary); font-weight:600; font-size:0.82rem; line-height:1.6; margin:0 0 18px;">Pemeringkatan kualitas studio animasi berdasarkan 6 kriteria MAL menggunakan metode SAW yang terukur dan akurat.</p>
-          <div style="display:flex; align-items:center; gap:6px; padding-top:14px; border-top:2px solid #e2e8f0;">
+          <h3
+            style="font-family:'Rajdhani',sans-serif; font-weight:900; font-size:1.4rem; text-transform:uppercase; color:var(--ink); margin:0 0 8px; letter-spacing:0.03em;"
+          >
+            Ranking Studio
+          </h3>
+          <p
+            style="color:var(--text-secondary); font-weight:600; font-size:0.82rem; line-height:1.6; margin:0 0 18px;"
+          >
+            Pemeringkatan kualitas studio animasi berdasarkan 6 kriteria MAL
+            menggunakan metode SAW yang terukur dan akurat.
+          </p>
+          <div
+            style="display:flex; align-items:center; gap:6px; padding-top:14px; border-top:2px solid #e2e8f0;"
+          >
             <div style="flex:1; height:3px; background:#2563eb;"></div>
-            <span style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.8rem; text-transform:uppercase; color:#1e3a8a;">Mulai Analisis →</span>
+            <span
+              style="font-family:'Rajdhani',sans-serif; font-weight:800; font-size:0.8rem; text-transform:uppercase; color:#1e3a8a;"
+              >Mulai Analisis →</span
+            >
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
   <!-- ==========================================
        PANEL 2: STUDIO UPLOAD (existing upload UI, hidden by default)
        ========================================== -->
-  <div id="hero-studio-upload" style="display:none; flex:1; align-items:center; justify-content:center; position:relative; z-index:2; padding: 1rem 1rem 100px;">
-    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-
+  <div
+    id="hero-studio-upload"
+    style="display:none; flex:1; align-items:center; justify-content:center; position:relative; z-index:2; padding: 1rem 1rem 100px;"
+  >
+    <div
+      class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+    >
       <!-- Left Column: Header -->
-      <div style="text-align:left; display: flex; flex-direction: column; justify-content: center;">
+      <div
+        style="text-align:left; display: flex; flex-direction: column; justify-content: center;"
+      >
         <!-- Back button -->
-        <button id="btn-back-to-selector"
+        <button
+          id="btn-back-to-selector"
           style="display:inline-flex; align-items:center; gap:6px; background:transparent; border:none; color:rgba(255,255,255,0.55); font-weight:700; font-size:0.8rem; text-transform:uppercase; cursor:pointer; padding:0; margin-bottom:20px; letter-spacing:0.08em;"
           onmouseover="this.style.color='#fff'"
-          onmouseout="this.style.color='rgba(255,255,255,0.55)'">
-          <svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+          onmouseout="this.style.color='rgba(255,255,255,0.55)'"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            style="width:16px;height:16px;"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="3"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
           </svg>
           Kembali ke Pilihan Modul
         </button>
 
         <!-- Main title -->
-        <h1 style="font-family:'Rajdhani',sans-serif; font-weight:900; line-height:1.1; margin-bottom:1.5rem; color:#ffffff; text-transform: uppercase;">
-          <span style="display:block; font-size:clamp(1.2rem,3vw,1.6rem); font-weight:800; letter-spacing:0.05em; margin-bottom: 6px;">Pemeringkatan Kualitas</span>
-          <span style="display:block; font-size:clamp(2.2rem,5vw,3.2rem); font-weight:900;">Studio Animasi</span>
+        <h1
+          style="font-family:'Rajdhani',sans-serif; font-weight:900; line-height:1.1; margin-bottom:1.5rem; color:#ffffff; text-transform: uppercase;"
+        >
+          <span
+            style="display:block; font-size:clamp(1.2rem,3vw,1.6rem); font-weight:800; letter-spacing:0.05em; margin-bottom: 6px;"
+            >Pemeringkatan Kualitas</span
+          >
+          <span
+            style="display:block; font-size:clamp(2.2rem,5vw,3.2rem); font-weight:900;"
+            >Studio Animasi</span
+          >
         </h1>
 
-        <p style="color:var(--text-secondary); font-weight: 600; font-size:0.95rem; max-width:460px; line-height:1.6; border: var(--border-thin); background: #e5e5e5; padding: 12px 18px; margin: 0; box-shadow: 3px 3px 0px var(--ink);">
-          Upload data Excel studio animasi, definisikan <span class="manga-highlight" style="background:var(--ocean);">6 kriteria SAW</span>, atur bobot, dan dapatkan ranking akurat. Semua dihitung otomatis di browser.
+        <p
+          style="color:var(--text-secondary); font-weight: 600; font-size:0.95rem; max-width:460px; line-height:1.6; border: var(--border-thin); background: #e5e5e5; padding: 12px 18px; margin: 0; box-shadow: 3px 3px 0px var(--ink);"
+        >
+          Upload data Excel studio animasi, definisikan <span
+            class="manga-highlight"
+            style="background:var(--ocean);">6 kriteria SAW</span
+          >, atur bobot, dan dapatkan ranking akurat. Semua dihitung otomatis di
+          browser.
         </p>
       </div>
 
       <!-- Right Column: DROPZONE CARD -->
-      <div class="brutal-card" style="overflow:hidden; position:relative; width: 100%;">
-
+      <div
+        class="brutal-card"
+        style="overflow:hidden; position:relative; width: 100%;"
+      >
         <!-- Card header -->
-        <div style="padding:10px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom: var(--border-thick); background: #d4d4d8;">
+        <div
+          style="padding:10px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom: var(--border-thick); background: #d4d4d8;"
+        >
           <div style="display:flex; align-items:center; gap:10px;">
-            <div style="width:28px; height:28px; background: var(--ink); color: white; display:flex; align-items:center; justify-content:center; font-family: monospace; font-weight: bold; border-radius: 2px;">
+            <div
+              style="width:28px; height:28px; background: var(--ink); color: white; display:flex; align-items:center; justify-content:center; font-family: monospace; font-weight: bold; border-radius: 2px;"
+            >
               >_
             </div>
             <div>
-              <p style="font-weight:800; color:var(--ink); font-size:1rem; margin:0; text-transform: uppercase; font-family: 'Rajdhani', sans-serif;">Upload Data</p>
+              <p
+                style="font-weight:800; color:var(--ink); font-size:1rem; margin:0; text-transform: uppercase; font-family: 'Rajdhani', sans-serif;"
+              >
+                Upload Data
+              </p>
             </div>
           </div>
-          <div style="font-weight: 700; font-size: 0.75rem; color: var(--ink); background: #cbd5e1; padding: 2px 8px; border: var(--border-thin);">
+          <div
+            style="font-weight: 700; font-size: 0.75rem; color: var(--ink); background: #cbd5e1; padding: 2px 8px; border: var(--border-thin);"
+          >
             .XLSX / .CSV
           </div>
         </div>
@@ -155,64 +298,149 @@
             style="position:relative; border: 3px dashed var(--ink); background: #e5e5e5; min-height:130px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.15s;"
             onmouseover="this.style.background='#d4d4d8'; this.style.transform='scale(1.01)'"
             onmouseout="this.style.background='#e5e5e5'; this.style.transform='scale(1)'"
-            role="button" tabindex="0"
+            role="button"
+            tabindex="0"
           >
-            <input type="file" id="dropzone-input" accept=".xlsx,.xls,.csv"
-              style="position:absolute; inset:0; opacity:0; cursor:pointer; z-index:5;" />
+            <input
+              type="file"
+              id="dropzone-input"
+              accept=".xlsx,.xls,.csv"
+              style="position:absolute; inset:0; opacity:0; cursor:pointer; z-index:5;"
+            />
 
             <!-- Idle -->
-            <div id="dropzone-idle" style="text-align:center; padding: 0.75rem 1rem;">
-              <div class="anim-float" style="width:44px; height:44px; margin:0 auto 0.5rem; background: var(--ocean); border: var(--border-thick); box-shadow: 3px 3px 0px var(--ink); display:flex; align-items:center; justify-content:center; transform: rotate(-5deg);">
-                <svg xmlns="http://www.w3.org/2000/svg" style="width:24px; height:24px; color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            <div
+              id="dropzone-idle"
+              style="text-align:center; padding: 0.75rem 1rem;"
+            >
+              <div
+                class="anim-float"
+                style="width:44px; height:44px; margin:0 auto 0.5rem; background: var(--ocean); border: var(--border-thick); box-shadow: 3px 3px 0px var(--ink); display:flex; align-items:center; justify-content:center; transform: rotate(-5deg);"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="width:24px; height:24px; color:white;"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  ></path>
                 </svg>
               </div>
-              <p style="color:var(--ink); font-weight:800; font-size:1rem; margin:0 0 2px; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">Drag &amp; Drop File Excel</p>
-              <p style="color:var(--text-secondary); font-weight: 600; font-size:0.8rem; margin:0;">atau klik area ini untuk memilih file</p>
+              <p
+                style="color:var(--ink); font-weight:800; font-size:1rem; margin:0 0 2px; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;"
+              >
+                Drag &amp; Drop File Excel
+              </p>
+              <p
+                style="color:var(--text-secondary); font-weight: 600; font-size:0.8rem; margin:0;"
+              >
+                atau klik area ini untuk memilih file
+              </p>
             </div>
 
             <!-- Loading -->
-            <div id="dropzone-loading" style="display:none; text-align:center; padding:1.5rem;">
-              <div style="width:36px; height:36px; margin:0 auto 8px; border:4px solid var(--ink); border-top-color:var(--ocean);" class="animate-spin"></div>
-              <p style="color:var(--ink); font-weight:800; font-size:0.9rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">Membaca file...</p>
+            <div
+              id="dropzone-loading"
+              style="display:none; text-align:center; padding:1.5rem;"
+            >
+              <div
+                style="width:36px; height:36px; margin:0 auto 8px; border:4px solid var(--ink); border-top-color:var(--ocean);"
+                class="animate-spin"
+              >
+              </div>
+              <p
+                style="color:var(--ink); font-weight:800; font-size:0.9rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;"
+              >
+                Membaca file...
+              </p>
             </div>
 
             <!-- Success -->
-            <div id="dropzone-success" style="display:none; text-align:center; padding:1.5rem;">
-              <div style="width:44px; height:44px; margin:0 auto 8px; background:#22c55e; border:var(--border-thick); box-shadow: 3px 3px 0px var(--ink); display:flex; align-items:center; justify-content:center;">
-                <svg xmlns="http://www.w3.org/2000/svg" style="width:24px; height:24px;" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            <div
+              id="dropzone-success"
+              style="display:none; text-align:center; padding:1.5rem;"
+            >
+              <div
+                style="width:44px; height:44px; margin:0 auto 8px; background:#22c55e; border:var(--border-thick); box-shadow: 3px 3px 0px var(--ink); display:flex; align-items:center; justify-content:center;"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="width:24px; height:24px;"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="white"
+                  stroke-width="3"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 13l4 4L19 7"></path>
                 </svg>
               </div>
-              <p style="color:var(--ink); font-weight:800; font-size:1rem; margin:0 0 2px; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;" id="dropzone-filename">File terbaca!</p>
-              <p style="color:var(--text-secondary); font-weight: 600; font-size:0.8rem; margin:0;" id="dropzone-info"></p>
+              <p
+                style="color:var(--ink); font-weight:800; font-size:1rem; margin:0 0 2px; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;"
+                id="dropzone-filename"
+              >
+                File terbaca!
+              </p>
+              <p
+                style="color:var(--text-secondary); font-weight: 600; font-size:0.8rem; margin:0;"
+                id="dropzone-info"
+              >
+              </p>
             </div>
           </div>
         </div>
 
         <!-- Sample data button -->
         <div style="padding:0 20px 12px;">
-          <button id="btn-use-sample" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:8px 16px; border:var(--border-thick); background:#f8fafc; color:var(--ink); font-weight:800; font-size:0.9rem; cursor:pointer; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; box-shadow: 4px 4px 0px var(--ink); transition:all 0.1s;"
+          <button
+            id="btn-use-sample"
+            style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:8px 16px; border:var(--border-thick); background:#f8fafc; color:var(--ink); font-weight:800; font-size:0.9rem; cursor:pointer; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; box-shadow: 4px 4px 0px var(--ink); transition:all 0.1s;"
             onmouseover="this.style.transform='translate(-2px, -2px)'; this.style.boxShadow='6px 6px 0px var(--ink)';"
-            onmouseout="this.style.transform='translate(0, 0)'; this.style.boxShadow='4px 4px 0px var(--ink)';">
-            <svg xmlns="http://www.w3.org/2000/svg" style="width:18px; height:18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            onmouseout="this.style.transform='translate(0, 0)'; this.style.boxShadow='4px 4px 0px var(--ink)';"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              style="width:18px; height:18px;"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
             </svg>
             Coba dengan Data Sample (30 Studio)
           </button>
         </div>
       </div>
-
     </div>
   </div>
 
   <!-- ==========================================
        RUNNING TICKER — Studio Anime Logos
        ========================================== -->
-  <div style="position:absolute; bottom:0; left:0; right:0; z-index:3; border-top:var(--border-thick); background:#e5e5e5; overflow:hidden;">
+  <div
+    style="position:absolute; bottom:0; left:0; right:0; z-index:3; border-top:var(--border-thick); background:#e5e5e5; overflow:hidden;"
+  >
     <!-- Fade left & right -->
-    <div style="position:absolute; left:0; top:0; bottom:0; width:80px; z-index:10; background:linear-gradient(90deg, #e5e5e5 20%, transparent); pointer-events:none;"></div>
-    <div style="position:absolute; right:0; top:0; bottom:0; width:80px; z-index:10; background:linear-gradient(270deg, #e5e5e5 20%, transparent); pointer-events:none;"></div>
+    <div
+      style="position:absolute; left:0; top:0; bottom:0; width:80px; z-index:10; background:linear-gradient(90deg, #e5e5e5 20%, transparent); pointer-events:none;"
+    >
+    </div>
+    <div
+      style="position:absolute; right:0; top:0; bottom:0; width:80px; z-index:10; background:linear-gradient(270deg, #e5e5e5 20%, transparent); pointer-events:none;"
+    >
+    </div>
 
     <!-- Ticker track wrapper -->
     <div style="overflow:hidden; border-bottom:var(--border-thin);">
@@ -221,7 +449,6 @@
       </div>
     </div>
   </div>
-
 </section>
 
 <script>
@@ -229,116 +456,122 @@
   // STUDIO LOGOS DATA
   // ==========================================
   const STUDIOS = [
-    { name: 'Ufotable',         image: '/ufotable.png' },
-    { name: 'MAPPA',            image: '/mappa.png' },
-    { name: 'Wit Studio',       image: '/wit_studio.png' },
-    { name: 'Madhouse',         image: '/madhouse.png' },
-    { name: 'Kyoto Animation',  image: '/kyoani.png' },
-    { name: 'P.A. Works',       image: '/pa_works.png' },
-    { name: 'Bones',            image: '/bones.png' },
-    { name: 'Studio Trigger',   image: '/trigger.png' },
-    { name: 'CloverWorks',      image: '/cloverworks.png' },
-    { name: 'TMS Entertainment',image: '/tms.png' },
-    { name: 'A-1 Pictures',     image: '/a-1.png' },
-    { name: 'Toei Animation',   image: '/toei.png' },
-    { name: 'Sunrise',          image: '/sunrise.png' },
-    { name: 'Production I.G',   image: '/production_ig.png' },
-    { name: 'Anime Studio',     image: '/pngwing.com.png' },
+    { name: "Ufotable", image: "/ufotable.png" },
+    { name: "MAPPA", image: "/mappa.png" },
+    { name: "Wit Studio", image: "/wit_studio.png" },
+    { name: "Madhouse", image: "/madhouse.png" },
+    { name: "Kyoto Animation", image: "/kyoani.png" },
+    { name: "P.A. Works", image: "/pa_works.png" },
+    { name: "Bones", image: "/bones.png" },
+    { name: "Studio Trigger", image: "/trigger.png" },
+    { name: "CloverWorks", image: "/cloverworks.png" },
+    { name: "TMS Entertainment", image: "/tms.png" },
+    { name: "A-1 Pictures", image: "/a-1.png" },
+    { name: "Toei Animation", image: "/toei.png" },
+    { name: "Sunrise", image: "/sunrise.png" },
+    { name: "Production I.G", image: "/production_ig.png" },
+    { name: "Anime Studio", image: "/pngwing.com.png" },
   ];
 
   function buildTickerHTML() {
-    return STUDIOS.map(s => `
+    return STUDIOS.map(
+      (s) => `
       <div class="ticker-logo-container" title="${s.name}">
         <div class="ticker-logo-wrapper">
           <img src="${s.image}" alt="${s.name}" class="ticker-logo-img" onerror="this.parentElement.parentElement.style.display='none'" />
         </div>
       </div>
-    `).join('');
+    `,
+    ).join("");
   }
 
   // Build ticker (double for seamless loop)
-  const track = document.getElementById('ticker-track');
+  const track = document.getElementById("ticker-track");
   if (track) {
     const html = buildTickerHTML();
     track.innerHTML = html + html;
   }
 
   // Back to selector button
-  document.getElementById('btn-back-to-selector')?.addEventListener('click', () => {
-    window.dispatchEvent(new CustomEvent('spk:back-to-hero'));
-  });
+  document
+    .getElementById("btn-back-to-selector")
+    ?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("spk:back-to-hero"));
+    });
 
   // Dropzone events
-  const dropzone = document.getElementById('dropzone');
-  const dropzoneInput = document.getElementById('dropzone-input');
-  const btnUseSample = document.getElementById('btn-use-sample');
+  const dropzone = document.getElementById("dropzone");
+  const dropzoneInput = document.getElementById("dropzone-input");
+  const btnUseSample = document.getElementById("btn-use-sample");
 
-  btnUseSample?.addEventListener('click', () => {
-    window.dispatchEvent(new CustomEvent('spk:use-sample'));
+  btnUseSample?.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("spk:use-sample"));
   });
 
-  ['dragenter', 'dragover'].forEach(evt => {
+  ["dragenter", "dragover"].forEach((evt) => {
     dropzone?.addEventListener(evt, (e) => {
       e.preventDefault();
-      dropzone.style.borderColor = 'var(--ocean)';
-      dropzone.style.background = '#eff6ff';
+      dropzone.style.borderColor = "var(--ocean)";
+      dropzone.style.background = "#eff6ff";
     });
   });
 
-  ['dragleave', 'dragend'].forEach(evt => {
+  ["dragleave", "dragend"].forEach((evt) => {
     dropzone?.addEventListener(evt, () => {
-      dropzone.style.borderColor = 'var(--ink)';
-      dropzone.style.background = '#e5e5e5';
+      dropzone.style.borderColor = "var(--ink)";
+      dropzone.style.background = "#e5e5e5";
     });
   });
 
-  dropzone?.addEventListener('drop', (e) => {
+  dropzone?.addEventListener("drop", (e) => {
     e.preventDefault();
-    dropzone.style.borderColor = 'var(--ink)';
-    dropzone.style.background = '#e5e5e5';
+    dropzone.style.borderColor = "var(--ink)";
+    dropzone.style.background = "#e5e5e5";
     const file = e.dataTransfer?.files[0];
     if (file) handleFile(file);
   });
 
-  dropzoneInput?.addEventListener('change', (e) => {
+  dropzoneInput?.addEventListener("change", (e) => {
     const file = e.target.files?.[0];
     if (file) handleFile(file);
   });
 
   function handleFile(file) {
-    window.showDropzoneState?.('loading');
-    window.dispatchEvent(new CustomEvent('spk:file-selected', { detail: { file } }));
+    window.showDropzoneState?.("loading");
+    window.dispatchEvent(
+      new CustomEvent("spk:file-selected", { detail: { file } }),
+    );
   }
 
-  window.showDropzoneState = function(state, filename = '', info = '') {
-    const idle = document.getElementById('dropzone-idle');
-    const loading = document.getElementById('dropzone-loading');
-    const success = document.getElementById('dropzone-success');
-    if (idle) idle.style.display = state === 'idle' ? 'block' : 'none';
-    if (loading) loading.style.display = state === 'loading' ? 'flex' : 'none';
-    if (success) success.style.display = state === 'success' ? 'block' : 'none';
-    if (state === 'success') {
-      const el = document.getElementById('dropzone-filename');
-      const infoEl = document.getElementById('dropzone-info');
+  window.showDropzoneState = function (state, filename = "", info = "") {
+    const idle = document.getElementById("dropzone-idle");
+    const loading = document.getElementById("dropzone-loading");
+    const success = document.getElementById("dropzone-success");
+    if (idle) idle.style.display = state === "idle" ? "block" : "none";
+    if (loading) loading.style.display = state === "loading" ? "flex" : "none";
+    if (success) success.style.display = state === "success" ? "block" : "none";
+    if (state === "success") {
+      const el = document.getElementById("dropzone-filename");
+      const infoEl = document.getElementById("dropzone-info");
       if (el) el.textContent = filename;
       if (infoEl) infoEl.textContent = info;
     }
   };
 
   // Panel switching (called by index.astro controller)
-  window.showStudioUploadPanel = function() {
-    const selector = document.getElementById('hero-module-selector');
-    const upload   = document.getElementById('hero-studio-upload');
-    if (selector) selector.style.display = 'none';
-    if (upload)   upload.style.display   = 'flex';
-    window.showDropzoneState?.('idle');
+  window.showStudioUploadPanel = function () {
+    const selector = document.getElementById("hero-module-selector");
+    const upload = document.getElementById("hero-studio-upload");
+    if (selector) selector.style.display = "none";
+    if (upload) upload.style.display = "flex";
+    window.showDropzoneState?.("idle");
   };
 
-  window.showModuleSelector = function() {
-    const selector = document.getElementById('hero-module-selector');
-    const upload   = document.getElementById('hero-studio-upload');
-    if (selector) selector.style.display = 'flex';
-    if (upload)   upload.style.display   = 'none';
+  window.showModuleSelector = function () {
+    const selector = document.getElementById("hero-module-selector");
+    const upload = document.getElementById("hero-studio-upload");
+    if (selector) selector.style.display = "flex";
+    if (upload) upload.style.display = "none";
   };
 </script>
 
@@ -347,9 +580,17 @@
     animation: spin 1s linear infinite;
   }
   @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  #hero-module-selector { flex-direction: column; }
-  #hero-studio-upload   { flex-direction: row; }
+  #hero-module-selector {
+    flex-direction: column;
+  }
+  #hero-studio-upload {
+    flex-direction: row;
+  }
 </style>
