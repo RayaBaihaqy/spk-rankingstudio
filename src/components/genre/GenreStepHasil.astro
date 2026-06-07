@@ -221,8 +221,10 @@
           return maxCol[j] === 0 ? 0 : val / maxCol[j];
         }
       } else {
-        // Cost (C6): standard SAW cost = min / val
-        return val === 0 ? 0 : minCol[j] / val;
+        // Cost (C6): (max - val) / (max - min)
+        // Rumus ini cocok dengan PDF dan aman saat min = 0
+        const denom = maxCol[j] - minCol[j];
+        return denom === 0 ? 0 : (maxCol[j] - val) / denom;
       }
     }));
 
