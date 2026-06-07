@@ -19,19 +19,21 @@ export function normalizeMatrix(matrix, types) {
     Math.min(...matrix.map(row => row[j]))
   );
 
+
   // Normalisasi
   const matrixR = matrix.map(row =>
     row.map((val, j) => {
       if (types[j] === 'Benefit') {
-        // r_ij = x_ij / max(x_j)
-        return maxPerCol[j] === 0 ? 0 : val / maxPerCol[j];
+        // Benefit: min‑max normalization
+        const denom = maxPerCol[j] - minPerCol[j];
+        return denom === 0 ? 0 : (val - minPerCol[j]) / denom;
       } else {
-        // Cost: r_ij = min(x_j) / x_ij
-        return val === 0 ? 0 : minPerCol[j] / val;
+        // Cost: (max - value) / (max - min)
+        const denom = maxPerCol[j] - minPerCol[j];
+        return denom === 0 ? 0 : (maxPerCol[j] - val) / denom;
       }
     })
   );
-
   return matrixR;
 }
 

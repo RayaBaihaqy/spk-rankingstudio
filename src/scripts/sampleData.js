@@ -38,9 +38,9 @@ export const CRITERIA_LABELS = {
   c1: { label: 'C1 - Skor MAL',      type: 'Benefit', desc: 'Rating rata-rata (0-10)',      unit: 'poin',   min: 0, max: 10, step: 0.01 },
   c2: { label: 'C2 - Members',       type: 'Benefit', desc: 'Jumlah member MAL',            unit: 'orang',  min: 0, max: 99999999, step: 1 },
   c3: { label: 'C3 - Produktivitas', type: 'Benefit', desc: 'Total jumlah anime diproduksi',unit: 'judul',  min: 0, max: 9999, step: 1 },
-  c4: { label: 'C4 - Rasio Flop',    type: 'Cost',    desc: '% anime dengan skor < 6',     unit: '%',      min: 0, max: 100, step: 0.1 },
+  c4: { label: 'C4 - Rasio Flop',    type: 'Benefit', desc: '% anime dengan skor < 6',     unit: '%',      min: 0, max: 100, step: 0.1 },
   c5: { label: 'C5 - Favorites',     type: 'Benefit', desc: 'Total favorites di MAL',       unit: 'orang',  min: 0, max: 99999999, step: 1 },
-  c6: { label: 'C6 - Masterpiece',   type: 'Benefit', desc: 'Jumlah anime dengan skor ≥ 8', unit: 'judul', min: 0, max: 9999, step: 1 },
+  c6: { label: 'C6 - Masterpiece',   type: 'Cost',    desc: 'Jumlah anime dengan skor ≥ 8', unit: 'judul', min: 0, max: 9999, step: 1 }
 };
 
 export const DEFAULT_WEIGHTS = {
