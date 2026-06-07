@@ -207,18 +207,22 @@
 
     const m = 6;
     // Normalisasi SAW
-    const maxCol = Array.from({ length: m }, (_, j) => Math.max(...matrixX.map(r => r[j] || 0)));
-    const minCol = Array.from({ length: m }, (_, j) => Math.min(...matrixX.map(r => r[j] || 0)));
+    const maxCol = Array.from({ length: m }, (_, j) => Math.max(...matrixX.map(r => r[j])));
+    const minCol = Array.from({ length: m }, (_, j) => Math.min(...matrixX.map(r => r[j])));
 
     const matrixR = matrixX.map(row => row.map((val, j) => {
       if (genre_CRITERIA_TYPES[j] === 'Benefit') {
-        // Benefit: min-max normalization
-        const denom = maxCol[j] - minCol[j];
-        return denom === 0 ? 0 : (val - minCol[j]) / denom;
+        // C4 (index 3) memiliki nilai negatif → pakai min-max normalization
+        // Kriteria benefit lain → pakai standard SAW: val / max
+        if (j === 3) {
+          const denom = maxCol[j] - minCol[j];
+          return denom === 0 ? 0 : (val - minCol[j]) / denom;
+        } else {
+          return maxCol[j] === 0 ? 0 : val / maxCol[j];
+        }
       } else {
-        // Cost: (max - value) / (max - min)
-        const denom = maxCol[j] - minCol[j];
-        return denom === 0 ? 0 : (maxCol[j] - val) / denom;
+        // Cost (C6): standard SAW cost = min / val
+        return val === 0 ? 0 : minCol[j] / val;
       }
     }));
 
